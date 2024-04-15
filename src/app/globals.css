@@ -11,20 +11,20 @@ section.hero{
 input[type="email"],
 input[type="password"],
 input[type="text"] {
-    @apply block w-full my-4 rounded-xl;
-    @apply border p-2 border-gray-800 bg-gray-300;
+    @apply block w-full rounded-xl;
+    @apply border p-2 my-2 border-gray-500 bg-gray-300;
 }
 input[type="email"]:disabled,
 input[type="password"]:disabled,
 input[type="text"]:disabled {
-    @apply bg-gray-300 cursor-not-allowed;
+    @apply bg-gray-200 border-0 cursor-not-allowed text-gray-500;
 }
 button{
     @apply block w-full text-gray-700 font-semibold;
     @apply border border-gray-500 rounded-xl px-6 py-2;
 }
 button[type="submit"], .submit{
-    @apply border-0 bg-primary text-white;
+    @apply border bg-primary text-white;
 }
 button[type="submit"]:disabled, .submit:disabled{
     @apply cursor-not-allowed bg-red-400;

@@ -2,8 +2,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import {signIn} from "next-auth/react";
 
-export default function Registerpage() {
+export default function RegisterPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [creatingUser, setCreatingUser] = useState(false);
@@ -28,20 +29,21 @@ export default function Registerpage() {
             setCreatingUser(false);
     }
     return (
-    <div>
         <section className="mt-8">
             <h1 className="text-center text-primary text-4xl font-semibold mb-4">
                 Register
             </h1>
             {userCreated && (
                 <div className="my-4 text-center">
-                    User created.<br />Now you can{' '}
+                    User created.<br />
+                    Now you can{' '}
                     <Link className="underline" href={'/login'}>Login &raquo;</Link>
                 </div>
             )}
             {error && (
                 <div className="my-4 text-center">
-                    An Error has occured.<br />Please try again later
+                    An Error has occured.<br />
+                    Please try again later
                 </div>
             )}
             <form className="block max-w-xs mx-auto" onSubmit={handleFormSubmit}>
@@ -57,7 +59,8 @@ export default function Registerpage() {
                 <div className="my-4 text-center text-gray-500">
                     or login with provider
                 </div>
-                <button className="flex gap-4 justify-center">
+                <button onClick={() => signIn('google', {callbackUrl:'/'})}
+                    className="flex gap-4 justify-center">
                     <Image src={'/google.png'} alt={'google-logo'} width={25} height={25} />
                     Login with google
                 </button>
@@ -66,6 +69,5 @@ export default function Registerpage() {
                 </div>
             </form>
         </section>
-    </div>
     );
 }
