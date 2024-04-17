@@ -1,4 +1,6 @@
 'use client';
+import InfoBox from "@/components/layout/InfoBox";
+import SuccessBox from "@/components/layout/SuccessBox";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
@@ -7,13 +9,16 @@ import { useEffect, useState } from "react";
 export default function ProfilePage() {
     const session = useSession();
     const [userName, setUserName] = useState('');
+    const [image, setImage] = useState('');
     const [ saved, setsaved] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
-    const {status} = session;
+    const [isUploading, setIsUploading] = useState(false);
+     const {status} = session;
 
     useEffect(() => {
         if (status === 'authenticated') {
             setUserName(session.data.user.name);
+            setImage(session.data.user.image);
         }
     }, [session, status]);
 
@@ -24,7 +29,7 @@ export default function ProfilePage() {
         const response = await fetch('/api/profile', {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({name:userName}),
+            body: JSON.stringify({name:userName, image}),
         });
         setIsSaving(false);
         if (response.ok) {
@@ -38,10 +43,14 @@ export default function ProfilePage() {
         if (files?.length === 1) {
             const data = new FormData;
             data.set('file', files[0]);
-            await fetch('/api/upload', {
+            setIsUploading(true);
+            const response = await fetch('/api/upload', {
                 method: 'POST',
-                body: data,
-           }); 
+                body: data, 
+           });
+           const link = await response.json();
+           setImage(link);
+           setIsUploading(false);
         }
     }
 
@@ -53,8 +62,6 @@ export default function ProfilePage() {
          return redirect('/login');
     }
 
-    const userImage = session.data.user.image;
-
     return (
         <section className="mt-8">
             <h1 className="text-center text-primary text-4xl font-semibold mb-4">
@@ -62,19 +69,20 @@ export default function ProfilePage() {
             </h1>
             <div className="max-w-md mx-auto">
                 {saved && (
-                    <h2 className="text-center bg-green-100 p-2 rounded-lg border border-green-300">
-                        Profile saved!
-                    </h2>
+                    <SuccessBox>Profile Saved!</SuccessBox>
                 )}
                 {isSaving && (
-                    <h2 className="text-center bg-blue-100 p-2 rounded-lg border border-blue-300">
-                    Saving..
-                </h2>
+                    <InfoBox>Saving..</InfoBox>
+                )}
+                {isUploading && (
+                    <InfoBox>Uploading..</InfoBox>
                 )}
                 <div className="flex gap-x-3 items-center">
                     <div>
                         <div className="p-2 rounded-lg relative">
-                            <Image className="rounded-lg mb-1 mt-1" src={userImage} width={90} height={90}  alt={'avatar'} />
+                        {image && (
+                            <Image className="rounded-lg mb-1 mt-1" src={image} width={90} height={90}  alt={'avatar'} />
+                        )}
                             <label>
                                 <input type="file" className="hidden" onChange={handleFileChange} />
                                 <span className="block border border-gray-500 rounded-xl px-6 py-2 mt-3 text-center cursor-pointer">Edit</span>
