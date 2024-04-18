@@ -122,23 +122,68 @@ export default function ProfilePage() {
                         </div>
                     </div>
                         <form className="grow" onSubmit={handleProfileInfoUpdate}>
-                            <input type="text" placeholder="First & Last name"
-                                value={userName} onChange={ev => setUserName(ev.target.value)}/>
-                            <input type="email" disabled={true} 
-                                value={session.data.user.email}/>
-                            <input type="tel" placeholder="Phone Number" 
-                                value={phone} onChange={ev => setPhone(ev.target.value)} />
-                            <input type="text" placeholder="Street address" 
-                                value={streetAddress} onChange={ev => setStreetAddress(ev.target.value)} />
-                            <div className="flex gap-2">
-                                <input style={{'margin': '0'}} type="text" placeholder="City/Town" 
-                                    value={city} onChange={ev => setCity(ev.target.value)} />
-                                <input style={{'margin': '0'}} type="text" placeholder="Postal code" 
-                                    value={postalCode} onChange={ev => setPostalCode(ev.target.value)} />
-                            </div>
-                            <input type="text" placeholder="Country" 
-                                value={country} onChange={ev => setCountry(ev.target.value)} />
-                            <button type="submit">Save</button>
+                            <label>
+                                First & Last Name
+                            </label>
+                                <input 
+                                    type="text" placeholder="First & Last name"
+                                    value={userName} onChange={ev => setUserName(ev.target.value)}
+                                    />
+                            <label>
+                                Email  
+                            </label>
+                                <input 
+                                    type="email" 
+                                    disabled={true} 
+                                    value={session.data.user.email}
+                                    placeholder={'email'}
+                                />
+                                <label>
+                                    Phone Number  
+                                </label>
+                                <input 
+                                    type="tel" 
+                                    placeholder="Phone Number" 
+                                    value={phone} onChange={ev => setPhone(ev.target.value)} 
+                                />
+                                <label>
+                                    Address 
+                                </label>
+                                <input 
+                                    type="text" placeholder="Street address/ Apartments" 
+                                    value={streetAddress} onChange={ev => setStreetAddress(ev.target.value)} 
+                                />
+                                <div className="flex gap-2">
+                                <div>
+                                    <label>
+                                    City/ Town  
+                                    </label>
+                                    <input
+                                        type="text" 
+                                        placeholder="City/Town" 
+                                        value={city} onChange={ev => setCity(ev.target.value)} 
+                                    />
+                                </div>
+                                <div>
+                                    <label>
+                                    Postal Code  
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        placeholder="Postal code" 
+                                        value={postalCode} onChange={ev => setPostalCode(ev.target.value)} 
+                                    />
+                                </div>
+                                </div>
+                                <label>
+                                    Country  
+                                </label>
+                                <input 
+                                    type="text" 
+                                    placeholder="Country" 
+                                    value={country} onChange={ev => setCountry(ev.target.value)} 
+                                />
+                                <button type="submit">Save</button>
                         </form>
                 </div>
             </div>
