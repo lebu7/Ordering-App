@@ -11,12 +11,26 @@ export default function ProfilePage() {
     const session = useSession();
     const [userName, setUserName] = useState('');
     const [image, setImage] = useState('');
-     const {status} = session;
+    const [phone, setPhone] = useState('');
+    const [streetAddress, setStreetAddress] = useState('');
+    const [postalCode, setPostalCode] = useState('');
+    const [city, setCity] = useState('');
+    const [country, setCountry] = useState('');
+    const {status} = session;
 
     useEffect(() => {
         if (status === 'authenticated') {
             setUserName(session.data.user.name);
             setImage(session.data.user.image);
+            fetch('/api/profile').then(response => {
+                response.json().then(data => {
+                   setPhone(data.phone);
+                   setStreetAddress(data.streetAddress);
+                   setPostalCode(data.postalCode);
+                   setCity(data.city);
+                   setCountry(data.country); 
+                })
+            });
         }
     }, [session, status]);
 
@@ -28,7 +42,15 @@ export default function ProfilePage() {
             const response = await fetch('/api/profile', {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({name:userName, image}),
+                body: JSON.stringify({
+                    name:userName, 
+                    image,
+                    streetAddress,
+                    phone,
+                    postalCode,
+                    city,
+                    country,
+                }),
             });
             if (response.ok)
                 resolve()
@@ -87,7 +109,7 @@ export default function ProfilePage() {
                 Profile
             </h1>
             <div className="max-w-md mx-auto">
-                <div className="flex gap-x-3 items-center">
+                <div className="flex gap-x-3">
                     <div>
                         <div className="p-2 rounded-lg relative">
                         {image && (
@@ -101,8 +123,21 @@ export default function ProfilePage() {
                     </div>
                         <form className="grow" onSubmit={handleProfileInfoUpdate}>
                             <input type="text" placeholder="First & Last name"
-                            value={userName} onChange={ev => setUserName(ev.target.value)}/>
-                            <input type="email" disabled={true} value={session.data.user.email}/>
+                                value={userName} onChange={ev => setUserName(ev.target.value)}/>
+                            <input type="email" disabled={true} 
+                                value={session.data.user.email}/>
+                            <input type="tel" placeholder="Phone Number" 
+                                value={phone} onChange={ev => setPhone(ev.target.value)} />
+                            <input type="text" placeholder="Street address" 
+                                value={streetAddress} onChange={ev => setStreetAddress(ev.target.value)} />
+                            <div className="flex gap-2">
+                                <input style={{'margin': '0'}} type="text" placeholder="City/Town" 
+                                    value={city} onChange={ev => setCity(ev.target.value)} />
+                                <input style={{'margin': '0'}} type="text" placeholder="Postal code" 
+                                    value={postalCode} onChange={ev => setPostalCode(ev.target.value)} />
+                            </div>
+                            <input type="text" placeholder="Country" 
+                                value={country} onChange={ev => setCountry(ev.target.value)} />
                             <button type="submit">Save</button>
                         </form>
                 </div>
