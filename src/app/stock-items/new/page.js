@@ -5,8 +5,7 @@ import EditableImage from "@/components/layout/EditableImage";
 import UserTabs from "@/components/layout/UserTabs";
 import {useProfile} from "@/components/UseProfile";
 import Link from "next/link";
-import Image from "next/image";
-import Right from "@/components/icons/Right";
+import Left from "@/components/icons/Left";
 
 export default function NewStockItemPage() {
 
@@ -51,8 +50,8 @@ export default function NewStockItemPage() {
             <UserTabs isAdmin={true} />
             <div className="max-w-md mx-auto mt-8">
                 <Link href={'/stock-items'} className="button">
+                    <Left />
                     <span>Show all stock items</span>
-                    <Right />
                 </Link>
             </div>
             <form onSubmit={handleFormSubmit} className="mt-8 max-w-md mx-auto">
