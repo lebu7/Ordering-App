@@ -57,7 +57,7 @@ export default function CategoriesPage() {
     }
 
     if (!profileData.admin) {
-        return 'Not an admin';
+        return 'Not an authorized user';
     }
 
     return (
