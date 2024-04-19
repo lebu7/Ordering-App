@@ -1,4 +1,5 @@
 'use client';
+import EditableImage from "@/components/layout/EditableImage";
 import InfoBox from "@/components/layout/InfoBox";
 import SuccessBox from "@/components/layout/SuccessBox";
 import UserTabs from "@/components/layout/UserTabs";
@@ -72,32 +73,6 @@ export default function ProfilePage() {
 
     }
 
-    async function handleFileChange(ev) {
-        const files = ev.target.files;
-        if (files?.length === 1) {
-            const data = new FormData;
-            data.set('file', files[0]);
-
-    const uploadPromise = fetch('/api/upload', {
-                    method: 'POST',
-                    body: data, 
-            }).then(response => {
-                if (response.ok) {
-                    return response.json().then(link => {
-                        setImage(link);
-                    })
-                   }
-                   throw new Error('something went wrong');
-            });
-
-        await toast.promise(uploadPromise, {
-            loading: 'Uploading..',
-            success: 'Upload complete!',
-            error: 'Upload error',
-        });
-    }
-}
-
     if (status === 'loading' || !profileFetched) {
         return 'Loading...'
     }
@@ -112,14 +87,8 @@ export default function ProfilePage() {
             <div className="max-w-md mx-auto mt-8">
                 <div className="flex gap-x-3">
                     <div>
-                        <div className="p-2 rounded-lg relative">
-                        {image && (
-                            <Image className="rounded-lg mb-1 mt-1" src={image} width={90} height={90}  alt={'avatar'} />
-                        )}
-                            <label>
-                                <input type="file" className="hidden" onChange={handleFileChange} />
-                                <span className="block border border-gray-500 rounded-xl px-6 py-2 mt-3 text-center text-gray-700 font-semibold cursor-pointer">Edit</span>
-                            </label>
+                        <div className="p-2 rounded-lg relative ">
+                            <EditableImage link={image} setLink={setImage} />
                         </div>
                     </div>
                         <form className="grow" onSubmit={handleProfileInfoUpdate}>
