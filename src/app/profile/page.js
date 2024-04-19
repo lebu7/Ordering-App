@@ -19,6 +19,7 @@ export default function ProfilePage() {
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
     const [isAdmin, setIsAdmin] = useState('false');
+    const [profileFetched, setProfileFetched] = useState(false);
     const {status} = session;
 
     useEffect(() => {
@@ -33,6 +34,7 @@ export default function ProfilePage() {
                    setCity(data.city);
                    setCountry(data.country); 
                    setIsAdmin(data.admin);
+                   setProfileFetched(true);
                 })
             });
         }
@@ -96,7 +98,7 @@ export default function ProfilePage() {
     }
 }
 
-    if (status === 'loading') {
+    if (status === 'loading' || !profileFetched) {
         return 'Loading...'
     }
 
@@ -116,7 +118,7 @@ export default function ProfilePage() {
                         )}
                             <label>
                                 <input type="file" className="hidden" onChange={handleFileChange} />
-                                <span className="block border border-gray-500 rounded-xl px-6 py-2 mt-3 text-center cursor-pointer">Edit</span>
+                                <span className="block border border-gray-500 rounded-xl px-6 py-2 mt-3 text-center text-gray-700 font-semibold cursor-pointer">Edit</span>
                             </label>
                         </div>
                     </div>
