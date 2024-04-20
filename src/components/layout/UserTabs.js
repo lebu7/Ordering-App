@@ -22,7 +22,7 @@ export default function UserTabs({isAdmin}) {
                     </Link>
                     <Link 
                         href={'/stock-items'}
-                        className={path === '/stock-items' ? 'active' : ''} 
+                        className={path.includes('stock-items') ? 'active' : ''} 
                         >
                             In Stock
                     </Link>

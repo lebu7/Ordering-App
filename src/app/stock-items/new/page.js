@@ -6,6 +6,7 @@ import UserTabs from "@/components/layout/UserTabs";
 import {useProfile} from "@/components/UseProfile";
 import Link from "next/link";
 import Left from "@/components/icons/Left";
+import { redirect } from "next/navigation";
 
 export default function NewStockItemPage() {
 
@@ -13,6 +14,7 @@ export default function NewStockItemPage() {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [basePrice, setBasePrice] = useState('');
+    const [redirectToItems, setRedirectToItems] = useState(false);
     const {loading, data} = useProfile();
 
     async function handleFormSubmit(ev) {
@@ -35,6 +37,12 @@ export default function NewStockItemPage() {
             success: 'Item saved!',
             error: 'Error',
         });
+
+        setRedirectToItems(true);
+    }
+
+    if (redirectToItems) {
+        return redirect('/stock-items');
     }
 
     if (loading) {
