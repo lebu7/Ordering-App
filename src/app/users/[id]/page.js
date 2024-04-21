@@ -1,4 +1,5 @@
 'use client';
+import UserForm from "@/components/layout/UserForm";
 import UserTabs from "@/components/layout/UserTabs";
 import { useProfile } from "@/components/UseProfile";
 export default function EditUserPage() {
@@ -16,7 +17,7 @@ export default function EditUserPage() {
         <section className="mt-8 max-w-2xl mx-auto">
             <UserTabs isAdmin={true} />
             <div className="mt-8 max-w-md mx-auto">
-                
+                <UserForm user={data} />
             </div>
         </section>
     )
