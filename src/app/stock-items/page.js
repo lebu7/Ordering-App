@@ -27,9 +27,9 @@ export default function StockItemsPage() {
     }
 
     return (
-        <section className="mt-8 max-w-md mx-auto">
+        <section className="mt-8 max-w-2xl mx-auto">
             <UserTabs isAdmin={true} />
-            <div className="mt-8">
+            <div className="mt-8 max-w-md mx-auto">
                 <Link
                     className="button flex" 
                     href={'/stock-items/new'}>
@@ -37,7 +37,7 @@ export default function StockItemsPage() {
                     <Right />
                 </Link>
             </div>
-            <div>
+            <div className="max-w-md mx-auto">
                 <h2 className="text-sm text-gray-500 mt-8">Edit Stock item:</h2>
                 <div className="grid grid-cols-3 gap-2">
                     {stockItems?.length > 0 && stockItems.map(item => (

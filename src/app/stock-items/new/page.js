@@ -52,8 +52,8 @@ export default function NewStockItemPage() {
     return (
         <section className="mt-8">
             <UserTabs isAdmin={true} />
-            <div className="max-w-md mx-auto mt-8">
-                <Link href={'/stock-items'} className="button">
+            <div className="max-w-2xl mx-auto mt-8">
+                <Link href={'/stock-items'} className="button max-w-md mx-auto">
                     <Left />
                     <span>Show all stock items</span>
                 </Link>

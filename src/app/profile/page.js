@@ -84,8 +84,8 @@ export default function ProfilePage() {
     return (
         <section className="mt-8">
             <UserTabs isAdmin={isAdmin} />
-            <div className="max-w-md mx-auto mt-8">
-                <div className="flex gap-x-3">
+            <div className="max-w-2xl mx-auto mt-8">
+                <div className="flex gap-x-3 max-w-md mx-auto">
                     <div>
                         <div className="p-2 rounded-lg relative ">
                             <EditableImage link={image} setLink={setImage} />

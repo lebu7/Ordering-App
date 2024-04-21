@@ -26,9 +26,9 @@ export default function StockItemForm({onSubmit, stockItem}) {
                     image, name, description, basePrice, sizes, colours, category,
                 })
             } 
-            className="mt-8 max-w-md mx-auto">
+            className="mt-8 max-w-xl mx-auto">
         <div 
-            className="grid items-start gap-4 p-1"
+            className="grid items-start gap-4 p-1 max-w-md mx-auto"
             style={{gridTemplateColumns: '.3fr .7fr'}}>
             <div>
                 <EditableImage link={image} setLink={setImage} />

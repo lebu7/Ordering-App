@@ -83,10 +83,10 @@ export default function CategoriesPage() {
     }
 
     return (
-        <section className="mt-8 max-w-md mx-auto">
+        <section className="mt-8 max-w-2xl mx-auto">
             <UserTabs isAdmin={true} />
                 <form className="mt-8" onSubmit={handleCategorySubmit}>
-                    <div className="flex gap-1 items-end">
+                    <div className="flex gap-1 items-end max-w-md mx-auto">
                         <div className="grow">
                             <label className="text-sm">
                                 {editedCategory ? 'Update category ' : 'New category name'}
@@ -115,7 +115,7 @@ export default function CategoriesPage() {
                         </div>
                     </div>
                 </form>
-                <div>
+                <div className="max-w-md mx-auto">
                     <h2 className="mt-8 text-sm text-gray-500">Existing Categories</h2>
                         {categories?.length > 0 && categories.map(c => (
                             <div 
