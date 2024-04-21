@@ -85,7 +85,7 @@ export default function CategoriesPage() {
         <section className="mt-8 max-w-md mx-auto">
             <UserTabs isAdmin={true} />
                 <form className="mt-8" onSubmit={handleCategorySubmit}>
-                    <div className="flex gap-2 items-end">
+                    <div className="flex gap-1 items-end">
                         <div className="grow">
                             <label className="text-sm">
                                 {editedCategory ? 'Update category ' : 'New category name'}
@@ -94,13 +94,22 @@ export default function CategoriesPage() {
                                 )}
                             </label>
                             <input type="text" 
+                                   className="text-sm"
                                    value={categoryName}
                                    onChange={ev => setCategoryName(ev.target.value)}
                              />
                         </div>
-                        <div className="pb-2">
+                        <div className="pb-2 flex gap-1 text-sm">
                             <button className="border border-primary" type="submit">
                                 {editedCategory ? 'Update' : 'Create'}
+                            </button>
+                            <button 
+                                type="button"
+                                onClick={() => {
+                                    setEditedCategory(null);
+                                    setCategoryName('');
+                                }}>
+                                Cancel
                             </button>
                         </div>
                     </div>
@@ -109,8 +118,8 @@ export default function CategoriesPage() {
                     <h2 className="mt-8 text-sm text-gray-500">Existing Categories</h2>
                         {categories?.length > 0 && categories.map(c => (
                             <div 
-                                className="bg-gray-100 rounded-xl p-2 px-4 flex gap-1 mb-1 " key={c._id}>
-                                <div className="mt-3 font-semibold grow text-sm tex">
+                                className="bg-gray-100 rounded-xl p-2 px-4 flex gap-1 mb-1 items-center text-sm" key={c._id}>
+                                <div className="font-semibold grow">
                                     {c.name}
                                 </div>
                                 <div className="flex gap-1">
