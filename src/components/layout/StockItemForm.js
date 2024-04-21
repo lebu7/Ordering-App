@@ -23,7 +23,7 @@ export default function StockItemForm({onSubmit, stockItem}) {
         <form 
             onSubmit={ev => 
                 onSubmit(ev, {
-                    image, name, description, basePrice, sizes, colours
+                    image, name, description, basePrice, sizes, colours, category,
                 })
             } 
             className="mt-8 max-w-md mx-auto">
