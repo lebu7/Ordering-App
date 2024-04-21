@@ -31,7 +31,7 @@ button, .button{
     @apply flex w-full justify-center gap-2 text-gray-700 font-semibold;
     @apply border border-gray-500 rounded-xl px-6 py-2;
 }
-button[type="submit"], .submit{
+button[type="submit"], .submit, button.primary{
     @apply border-primary bg-primary text-white;
 }
 button[type="submit"]:disabled, .submit:disabled{

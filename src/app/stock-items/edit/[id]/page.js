@@ -1,4 +1,5 @@
 'use client';
+import DeleteButton from "@/components/DeleteButton";
 import {useState, useEffect} from "react";
 import {toast} from "react-hot-toast";
 import UserTabs from "@/components/layout/UserTabs";
@@ -94,9 +95,10 @@ export default function EditStockItemPage() {
             <StockItemForm stockItem={stockItem} onSubmit={handleFormSubmit} />
             <div className="max-w-md mx-auto mt-1">
                 <div className="max-w-xs ml-auto pl-4 text-sm">
-                    <button onClick={handleDeleteClick}>
-                        Delete this item
-                    </button>
+                    <DeleteButton 
+                        label="Delete this item" 
+                        onDelete={handleDeleteClick}
+                    />
                 </div>
             </div>
         </section>
