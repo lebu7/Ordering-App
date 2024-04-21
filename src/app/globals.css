@@ -38,7 +38,7 @@ button[type="submit"]:disabled, .submit:disabled{
     @apply cursor-not-allowed bg-red-400;
 }
 div.tabs > * {
-    @apply bg-gray-300 text-gray-700 rounded-full py-2 px-5 ;
+    @apply bg-gray-300 text-gray-700 rounded-xl py-2 px-5 ;
 }
 div.tabs > *.active{
     @apply bg-primary text-white;
