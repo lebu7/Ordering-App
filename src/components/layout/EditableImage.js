@@ -29,9 +29,11 @@ export default function EditableImage({link, setLink}) {
 }
 
  return (
-    <>
+    <div>
     {link && (
-        <Image className="rounded-lg mb-1 mt-1" src={link} width={90} height={90}  alt={'avatar'} />
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Image className="rounded-lg mb-1 mt-1" src={link} width={90} height={90}  alt={'avatar'} />
+        </div>
     )}
     {!link && (
         <div className="text-center bg-gray-200 p-4 text-gray-500 rounded-lg mb-1">
@@ -40,8 +42,8 @@ export default function EditableImage({link, setLink}) {
     )}
         <label>
             <input type="file" className="hidden" onChange={handleFileChange} />
-            <span className="block border border-gray-500 rounded-xl px-6 py-2 mt-3 text-center text-gray-700 font-semibold cursor-pointer">Edit</span>
+            <span className="block border border-gray-500 rounded-xl px-4 py-2 mt-3 text-center text-gray-700 font-semibold cursor-pointer">Edit</span>
         </label>
-    </>
+    </div>
  );
 }

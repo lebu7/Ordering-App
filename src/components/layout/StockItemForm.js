@@ -27,18 +27,21 @@ export default function StockItemForm({onSubmit, stockItem}) {
             <div className="grow">
                 <label>Item Name</label>
                 <input
+                    className="text-sm"
                     type="text"
                     value={name}
                     onChange={ev => setName(ev.target.value)}
                 />
                 <label>Description</label>
                 <input
+                    className="text-sm"
                     type="text"
                     value={description}
                     onChange={ev => setDescription(ev.target.value)}
                 />
-                <label>Base price</label>
+                <label>Price</label>
                 <input
+                    className="text-sm"
                     type="text"
                     value={basePrice}
                     onChange={ev => setBasePrice(ev.target.value)}

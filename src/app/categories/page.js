@@ -66,7 +66,7 @@ export default function CategoriesPage() {
                 <form className="mt-8" onSubmit={handleCategorySubmit}>
                     <div className="flex gap-2 items-end">
                         <div className="grow">
-                            <label>
+                            <label className="text-sm">
                                 {editedCategory ? 'Update category ' : 'New category name'}
                                 {editedCategory && (
                                     <>: <b>{editedCategory.name}</b></>
@@ -92,7 +92,7 @@ export default function CategoriesPage() {
                                     setEditedCategory(c);
                                     setCategoryName(c.name);
                                 }}
-                                className="rounded-xl p-2 px-4 flex gap-1 cursor-pointer mb-1" key={c._id}>
+                                className="rounded-xl p-2 px-4 flex gap-1 cursor-pointer mb-1 " key={c._id}>
                                 <span>{c.name}</span>
                             </button>
                         ))}

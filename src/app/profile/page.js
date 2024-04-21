@@ -96,13 +96,15 @@ export default function ProfilePage() {
                                 First & Last Name
                             </label>
                                 <input 
+                                    className="text-sm"
                                     type="text" placeholder="First & Last name"
                                     value={userName} onChange={ev => setUserName(ev.target.value)}
                                     />
                             <label>
                                 Email  
                             </label>
-                                <input 
+                                <input
+                                    className="text-sm" 
                                     type="email" 
                                     disabled={true} 
                                     value={session.data.user.email}
@@ -111,7 +113,8 @@ export default function ProfilePage() {
                                 <label>
                                     Phone Number  
                                 </label>
-                                <input 
+                                <input
+                                    className="text-sm" 
                                     type="tel" 
                                     placeholder="Phone Number" 
                                     value={phone} onChange={ev => setPhone(ev.target.value)} 
@@ -120,6 +123,7 @@ export default function ProfilePage() {
                                     Address 
                                 </label>
                                 <input 
+                                    className="text-sm"
                                     type="text" placeholder="Street address/ Apartments" 
                                     value={streetAddress} onChange={ev => setStreetAddress(ev.target.value)} 
                                 />
@@ -129,6 +133,7 @@ export default function ProfilePage() {
                                     City/ Town  
                                     </label>
                                     <input
+                                        className="text-sm"
                                         type="text" 
                                         placeholder="City/Town" 
                                         value={city} onChange={ev => setCity(ev.target.value)} 
@@ -139,6 +144,7 @@ export default function ProfilePage() {
                                     Postal Code  
                                     </label>
                                     <input 
+                                        className="text-sm"
                                         type="text" 
                                         placeholder="Postal code" 
                                         value={postalCode} onChange={ev => setPostalCode(ev.target.value)} 
@@ -149,6 +155,7 @@ export default function ProfilePage() {
                                     Country  
                                 </label>
                                 <input 
+                                    className="text-sm"
                                     type="text" 
                                     placeholder="Country" 
                                     value={country} onChange={ev => setCountry(ev.target.value)} 

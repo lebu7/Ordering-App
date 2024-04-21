@@ -51,7 +51,7 @@ export default function StockItemsPage() {
                                     className="rounded-md"
                                     src={item.image} alt={''} width={100} height={100} />
                             </div>
-                            <div className="text-center">
+                            <div className="text-center text-base pt-1">
                                     {item.name}
                             </div>
                         </Link>
