@@ -8,6 +8,7 @@ export default function StockItemForm({onSubmit, stockItem}) {
     const [basePrice, setBasePrice] = useState(stockItem?.basePrice || '');
     const [sizes, setSizes] = useState(stockItem?.sizes || []);
     const [categories, setCategories] = useState();
+    const [category, setCategory] = useState(stockItem?.category || '');
     const [colours, setColours] = useState(stockItem?.colours || []);
 
     useEffect(() => {
@@ -48,14 +49,14 @@ export default function StockItemForm({onSubmit, stockItem}) {
                     onChange={ev => setDescription(ev.target.value)}
                 />
                 <label>Category</label>
-                <select>
+                <select  value={category} onChange={ev => setCategory(ev.target.value)} className="text-sm">
                     {categories?.length > 0 && categories.map(c => (
                         <option value={c._id} key={c._id}>{c.name}</option>
                     ))}
                 </select>
                 <label>Price</label>
                 <input
-                    className="text-sm"
+                    className="text-xs"
                     type="text"
                     value={basePrice}
                     onChange={ev => setBasePrice(ev.target.value)}
