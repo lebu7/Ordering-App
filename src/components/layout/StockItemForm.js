@@ -19,7 +19,7 @@ export default function StockItemForm({onSubmit, stockItem}) {
             } 
             className="mt-8 max-w-md mx-auto">
         <div 
-            className="grid items-start gap-4 p-2"
+            className="grid items-start gap-4 p-1"
             style={{gridTemplateColumns: '.3fr .7fr'}}>
             <div>
                 <EditableImage link={image} setLink={setImage} />
@@ -50,11 +50,11 @@ export default function StockItemForm({onSubmit, stockItem}) {
                                     addLabel={'Add Size'}
                                     props={sizes} 
                                     setProps={setSizes} />
-                <StockItemPriceProps name={'Colour'}
+                <StockItemPriceProps name={'Colours'}
                                     addLabel={'Add Colour'}
                                     props={colours} 
                                     setProps={setColours} />
-                <button type="submit">Save</button>
+                <button type="submit" className="text-sm">Save</button>
             </div>              
         </div>
     </form>

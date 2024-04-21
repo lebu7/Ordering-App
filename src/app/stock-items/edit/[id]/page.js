@@ -49,6 +49,27 @@ export default function EditStockItemPage() {
         setRedirectToItems(true);
     }
 
+    async function handleDeleteClick() {
+        const promise = new Promise(async (resolve, reject) => {  
+            const res = await fetch('/api/stock-items?_id=' + id, {
+                method: 'DELETE',
+            }); 
+            if (res.ok) {
+                resolve();
+            } else {
+                reject();
+            } 
+        });
+
+        await toast.promise(promise, {
+            loading: 'Deleting..',
+            success: 'Deleted',
+            error: 'Error',
+        });
+
+        setRedirectToItems(true);
+    }
+
     if (redirectToItems) {
         return redirect('/stock-items');
     }
@@ -70,7 +91,14 @@ export default function EditStockItemPage() {
                     <span>Show all stock items</span>
                 </Link>
             </div>
-           <StockItemForm stockItem={stockItem} onSubmit={handleFormSubmit} />
+            <StockItemForm stockItem={stockItem} onSubmit={handleFormSubmit} />
+            <div className="max-w-md mx-auto mt-1">
+                <div className="max-w-xs ml-auto pl-4 text-sm">
+                    <button onClick={handleDeleteClick}>
+                        Delete this item
+                    </button>
+                </div>
+            </div>
         </section>
     );
 
