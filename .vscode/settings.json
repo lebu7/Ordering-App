@@ -1,4 +1,6 @@
 {
     "reactSnippets.settings.prettierEnabled": true,
-    "prettier.embeddedLanguageFormatting": "off"
+    "prettier.embeddedLanguageFormatting": "off",
+    "dotnet.codeLens.enableTestsCodeLens": true,
+    "dotnet.codeLens.enableReferencesCodeLens": true
 }
