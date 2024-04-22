@@ -2,6 +2,7 @@
 import {useState} from "react";
 import Image from "next/image";
 import {signIn} from "next-auth/react";
+import { set } from "mongoose";
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -15,7 +16,9 @@ export default function LoginPage() {
         await signIn('credentials', {email, password, callbackUrl:'/'});
 
         setLoginInProgress(false);
+
     }
+      
 
     return (
         <section className="mt-8">

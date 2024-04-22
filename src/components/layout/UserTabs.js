@@ -24,7 +24,7 @@ export default function UserTabs({isAdmin}) {
                         href={'/stock-items'}
                         className={path.includes('stock-items') ? 'active' : ''} 
                         >
-                            In Stock
+                            Stock
                     </Link>
                     <Link 
                         href={'/orders'}

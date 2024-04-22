@@ -37,7 +37,7 @@ export default function StockItemsPage() {
                     <Right />
                 </Link>
             </div>
-            <div className="max-w-md mx-auto">
+            <div className="max-w-xl md:max-w-3xl mx-auto">
                 <h2 className="text-sm text-gray-500 mt-8">Edit Stock item:</h2>
                 <div className="grid grid-cols-3 gap-2">
                     {stockItems?.length > 0 && stockItems.map(item => (
