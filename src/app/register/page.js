@@ -3,13 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import {signIn} from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export default function RegisterPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [creatingUser, setCreatingUser] = useState(false);
     const [userCreated, setUserCreated] = useState(false);
-    const [redirectToItems, setRedirectToItems] = useState(false);
     const [error, setError] = useState(false);
     async function handleFormSubmit(ev){
         ev.preventDefault();
@@ -21,9 +21,10 @@ export default function RegisterPage() {
                 body: JSON.stringify({email, password}),
                 headers: {'Content-Type': 'application/json'},
         });
-        
+
         if (response.ok) {
             setUserCreated(true);
+            return redirect ('/');
         }
         else {
             setError(true);
