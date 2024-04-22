@@ -9,6 +9,7 @@ export default function RegisterPage() {
     const [password, setPassword] = useState('');
     const [creatingUser, setCreatingUser] = useState(false);
     const [userCreated, setUserCreated] = useState(false);
+    const [redirectToItems, setRedirectToItems] = useState(false);
     const [error, setError] = useState(false);
     async function handleFormSubmit(ev){
         ev.preventDefault();
@@ -20,6 +21,7 @@ export default function RegisterPage() {
                 body: JSON.stringify({email, password}),
                 headers: {'Content-Type': 'application/json'},
         });
+        
         if (response.ok) {
             setUserCreated(true);
         }

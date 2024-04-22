@@ -17,6 +17,7 @@ export default function ProfilePage() {
     const [user, setUser] = useState(null);
     const [isAdmin, setIsAdmin] = useState('false');
     const [profileFetched, setProfileFetched] = useState(false);
+    const [redirectToItems, setRedirectToItems] = useState(false);
     const {status} = session;
 
     useEffect(() => {
@@ -53,6 +54,10 @@ export default function ProfilePage() {
             error: 'Error',
         });
 
+        setRedirectToItems(true);
+    }
+    if (redirectToItems) {
+        return redirect ('/');
     }
 
     if (status === 'loading' || !profileFetched) {
