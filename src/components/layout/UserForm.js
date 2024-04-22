@@ -1,5 +1,6 @@
 'use client';
 import EditableImage from "@/components/layout/EditableImage";
+import { useProfile } from "@/components/UseProfile";
 import { useState } from "react";
 
 export default function UserForm({user, onSave}) {
@@ -11,6 +12,8 @@ export default function UserForm({user, onSave}) {
     const [city, setCity] = useState(user?.city || '');
     const [country, setCountry] = useState(user?.country || '');
     const [admin, setAdmin] = useState(user?.admin || false);
+    const {data:loggedInUserData} = useProfile();
+
     return (
         <div className="flex gap-x-3 max-w-md mx-auto">
                     <div>
@@ -94,12 +97,18 @@ export default function UserForm({user, onSave}) {
                                     placeholder="Country" 
                                     value={country} onChange={ev => setCountry(ev.target.value)} 
                                 />
-                                <div>
-                                    <label className="p-2 flex items-center gap-2 border mb-1" htmlFor="adminCb">
-                                        <input id="adminCb" type="checkbox" className="" />
+                                {loggedInUserData?.admin && (
+                                    <div>
+                                    <label className="p-2 inline-flex items-center gap-2 mb-1" htmlFor="adminCb">
+                                        <input 
+                                            id="adminCb" type="checkbox" className="w-4 h-4 accent-primary" value={'1'}
+                                            checked={admin} 
+                                            onClick={ev => setAdmin(ev.target.checked)}
+                                            />
                                         <span className="text-sm">Admin</span>
                                     </label>
                                 </div>
+                                )}
                                 <button type="submit">Save</button>
                         </form>
                 </div>

@@ -2,11 +2,13 @@
 import UserForm from "@/components/layout/UserForm";
 import UserTabs from "@/components/layout/UserTabs";
 import { useProfile } from "@/components/UseProfile";
-import { useParams } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 export default function EditUserPage() {
     const {loading, data} = useProfile();
+    const [redirectToItems, setRedirectToItems] = useState(false);
     const {id} = useParams();
     const [user, setUser] = useState(null);
 
@@ -34,11 +36,17 @@ export default function EditUserPage() {
     });
 
     await toast.promise(promise, {
-      loading: 'Saving user...',
+      loading: 'Saving user..',
       success: 'User saved',
       error: 'An error has occurred while saving the user',
     });
+
+    setRedirectToItems(true);
   }
+
+    if (redirectToItems) {
+        return redirect ('/users');
+    }
 
     if (loading) {
         return 'Loading user profile..';
