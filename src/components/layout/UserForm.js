@@ -3,7 +3,7 @@ import EditableImage from "@/components/layout/EditableImage";
 import { useState } from "react";
 
 export default function UserForm({user, onSave}) {
-    const [userName, setUserName] = useState(user?.userName || '');
+    const [userName, setUserName] = useState(user?.name || '');
     const [image, setImage] = useState(user?.image || '');
     const [phone, setPhone] = useState(user?.phone || '');
     const [streetAddress, setStreetAddress] = useState(user?.streetAddress || '');
@@ -21,7 +21,7 @@ export default function UserForm({user, onSave}) {
                         <form 
                             className="grow" 
                             onSubmit={ev => 
-                                onSave(ev,{
+                                onSave(ev, {
                                     name:userName, image, phone, admin,
                                      streetAddress, postalCode, city, country,})
                             }
@@ -75,12 +75,12 @@ export default function UserForm({user, onSave}) {
                                 </div>
                                 <div>
                                     <label>
-                                    Postal Code  
+                                    Estate  
                                     </label>
                                     <input 
                                         className="text-sm"
                                         type="text" 
-                                        placeholder="Postal code" 
+                                        placeholder="Estate" 
                                         value={postalCode} onChange={ev => setPostalCode(ev.target.value)} 
                                     />
                                 </div>
@@ -94,6 +94,12 @@ export default function UserForm({user, onSave}) {
                                     placeholder="Country" 
                                     value={country} onChange={ev => setCountry(ev.target.value)} 
                                 />
+                                <div>
+                                    <label className="p-2 flex items-center gap-2 border mb-1" htmlFor="adminCb">
+                                        <input id="adminCb" type="checkbox" className="" />
+                                        <span className="text-sm">Admin</span>
+                                    </label>
+                                </div>
                                 <button type="submit">Save</button>
                         </form>
                 </div>
