@@ -1,8 +1,18 @@
+'use client';
 import Image from "next/image";
 import StockItem from "../stock/StockItem";
 import SectionHeaders from "./SectionHeaders";
+import { useEffect, useState } from "react";
 
 export default function HomeMenu() {
+    const [bestSellers, setBestSellers] = useState([]);
+    useEffect(() => {
+        fetch('/api/stock-items').then(res => {
+            res.json().then(stockItems => {
+                setBestSellers(stockItems.slice(-3));
+            });
+        });
+    }, []);
     return (
         <section className="">
             <div className="absolute left-0 right-0 w-full justify-start ">
@@ -15,17 +25,14 @@ export default function HomeMenu() {
             </div>
             <div className="text-center mb-4">
                 <SectionHeaders 
-                    subHeader={'Purcahse'}
-                    mainHeader={'Stock'}
+                    subHeader={'Check out our'}
+                    mainHeader={'Best Sellers'}
                     />
             </div>
             <div className="grid grid-cols-3 gap-4">
-                <StockItem />
-                <StockItem />
-                <StockItem />
-                <StockItem />
-                <StockItem />
-                <StockItem />
+                {bestSellers?.length > 0 && bestSellers.map(item => (
+                    <StockItem  key={item._id} {...item} />
+                ))}
             </div>
         </section>
     );
