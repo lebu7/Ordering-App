@@ -9,7 +9,7 @@ export default function UserForm({user, onSave}) {
     const [image, setImage] = useState(user?.image || '');
     const [phone, setPhone] = useState(user?.phone || '');
     const [streetAddress, setStreetAddress] = useState(user?.streetAddress || '');
-    const [estate, setEstate] = useState(user?.postalCode || '');
+    const [estate, setEstate] = useState(user?.estate || '');
     const [city, setCity] = useState(user?.city || '');
     const [country, setCountry] = useState(user?.country || '');
     const [admin, setAdmin] = useState(user?.admin || false);

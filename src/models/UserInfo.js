@@ -3,7 +3,7 @@ import { Schema, model, models } from "mongoose";
 const UserInfoSchema = new Schema({
     email: {type: String, required: true },
     streetAddress: {type: String},
-    postalCode: {type: String},
+    estate: {type: String},
     city: {type: String},
     country: {type: String},
     phone: {type: String},
