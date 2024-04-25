@@ -7,6 +7,10 @@ import { useContext } from "react";
 
 export default function CartPage() {
     const {cartProducts,removeCartProduct} = useContext(CartContext);
+    let total = 0;
+    for (const p of cartProducts) {
+        total += cartProductPrice(p);
+    }
     return (
         <section className="mt-8">
             <div className="text-center">
@@ -19,7 +23,7 @@ export default function CartPage() {
                     )}
                     {cartProducts?.length > 0 && cartProducts.map((product, index)=> (
                         <div className="flex items-center gap-4 mb-2 border-b py-2" key={product._id}>
-                            <div className="w-24">
+                            <div className="w-14">
                                 <Image className="rounded-md" src={product.image} width={150} height={150} alt={product.name} />
                             </div>
                             <div className="grow">
@@ -56,8 +60,14 @@ export default function CartPage() {
                             </div>
                         </div>
                     ))}
+                    <div className=" py-3 text-right pr-12 font-semibold">
+                        <span className="text-md text-primary">Subtotal:&nbsp;</span>
+                        <span className="text-sm text-black">Kes {total}</span>
+                    </div>
                 </div>
-                <div>right</div>
+                <div className="bg-gray-100">
+                    <h2>Checkout</h2>
+                </div>
             </div>
         </section>
     );
