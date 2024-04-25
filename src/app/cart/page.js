@@ -65,8 +65,13 @@ export default function CartPage() {
                         <span className="text-sm text-black">Kes {total}</span>
                     </div>
                 </div>
-                <div className="bg-gray-100">
+                <div className="bg-gray-100 p-4 rounded-lg">
                     <h2>Checkout</h2>
+                    <form>
+                        <label>Address</label>
+                        <input type="text" placeholder="Enter delivery address" />                    
+                        <button className="text-sm" type="submit">Checkout (Kes {total})</button>
+                    </form>
                 </div>
             </div>
         </section>
