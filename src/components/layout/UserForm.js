@@ -1,4 +1,5 @@
 'use client';
+import AddressInputs from "@/components/layout/AddressInputs";
 import EditableImage from "@/components/layout/EditableImage";
 import { useProfile } from "@/components/UseProfile";
 import { useState } from "react";
@@ -8,11 +9,19 @@ export default function UserForm({user, onSave}) {
     const [image, setImage] = useState(user?.image || '');
     const [phone, setPhone] = useState(user?.phone || '');
     const [streetAddress, setStreetAddress] = useState(user?.streetAddress || '');
-    const [postalCode, setPostalCode] = useState(user?.postalCode || '');
+    const [estate, setEstate] = useState(user?.postalCode || '');
     const [city, setCity] = useState(user?.city || '');
     const [country, setCountry] = useState(user?.country || '');
     const [admin, setAdmin] = useState(user?.admin || false);
     const {data:loggedInUserData} = useProfile();
+
+    function handleAddressChange(propName, value) {
+        if (propName === 'phone') setPhone(value);
+        if (propName === 'streetAddress') setStreetAddress(value);
+        if (propName === 'city') setCity(value);
+        if (propName === 'estate') setEstate(value);
+        if (propName === 'country') setCountry(value);
+    }
 
     return (
         <div className="flex gap-x-3 max-w-md mx-auto">
@@ -26,7 +35,7 @@ export default function UserForm({user, onSave}) {
                             onSubmit={ev => 
                                 onSave(ev, {
                                     name:userName, image, phone, admin,
-                                     streetAddress, postalCode, city, country,})
+                                     streetAddress, estate, city, country,})
                             }
                         >
                             <label>
@@ -47,7 +56,11 @@ export default function UserForm({user, onSave}) {
                                     value={user.email}
                                     placeholder={'email'}
                                 />
-                                
+                                <AddressInputs 
+                                    addressProps={{
+                                        phone, streetAddress, city, estate, country}} 
+                                        setAddressProp={handleAddressChange}
+                                    />
                                 {loggedInUserData?.admin && (
                                     <div>
                                     <label className="p-2 inline-flex items-center gap-2 mb-1" htmlFor="adminCb">
