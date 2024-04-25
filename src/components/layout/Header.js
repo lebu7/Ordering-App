@@ -3,6 +3,7 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Fragment, useContext } from "react";
 import { CartContext } from "../AppContext";
+import ShoppingCart from "@/components/icons/ShoppingCart";
 
 export default function Header() {
   const session = useSession();
@@ -14,7 +15,7 @@ export default function Header() {
     userName = userName.split(' ')[0];
   }
     return (
-        <header className="flex items-center justify-between">
+        <header className="flex items-center justify-between px-2">
         <nav className="flex items-center gap-8 text-gray-500 font-semibold">
           <Link className="text-primary font-semibold text-2xl" href={'/'}>
             HAUTE GIRL
@@ -32,7 +33,7 @@ export default function Header() {
             </Link>
               <button  
                 onClick={() => signOut()} 
-                className="bg-primary rounded-full text-white px-8 py-2">
+                className="bg-primary rounded-full text-white px-5 py-2 text-md">
                 Logout
               </button>
             </>
@@ -45,7 +46,12 @@ export default function Header() {
               </Link>
             </>
           )}
-            <Link href={'/cart'}>Cart ({cartProducts.length}) </Link>
+            <Link href={'/cart'} className="relative">
+              <ShoppingCart className="w-7 h-7"/>
+              <span className="absolute -top-2 -right-4 bg-primary text-white py-1 px-1 text-xs rounded-full leading-3">
+                {cartProducts.length}
+              </span>
+            </Link>
         </nav>
       </header>
     );

@@ -24,13 +24,13 @@ export default function StockItem(stockItem) {
         setShowPopup(false);
         toast.success('Added to cart');
         }
-    function handleColoursClick(ev, colours) {
-        const colour = ev.target.checked;
-        if (colour) {
-            setSelectedColours(prev => [...prev, colours]);
+    function handleColoursClick(ev, colour) {
+        const checked = ev.target.checked;
+        if (checked) {
+            setSelectedColours(prev => [...prev, colour]);
         } else {
             setSelectedColours(prev => {
-                return prev.filter(c => c.name !== colours.name);
+                return prev.filter(c => c.name !== colour.name);
             });
         }
     }   
