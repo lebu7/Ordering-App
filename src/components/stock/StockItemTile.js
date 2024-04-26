@@ -1,4 +1,4 @@
-import AddToCartButton from "@/components/stock/AddToCartButton";
+import AddToCartButton from "@/components/menu/AddToCartButton";
 import Image from "next/image";
 
 export default function StockItemTile({onAddToCart, ...item}) {
@@ -6,7 +6,7 @@ export default function StockItemTile({onAddToCart, ...item}) {
         image, name, description, basePrice,
         sizes, colours,
     } = item;
-    const hasSizesOrColours = sizes?.length > 0 || colours?.length > 0;
+    const hasSizesOrColour = sizes?.length > 0 || colours?.length > 0; // TODO: Add options
     return (
         <div 
             className="bg-gray-200 p-4 rounded-lg text-center hover:bg-white hover:shadow-md hover:shadow-black/35 transition-all" style={{minHeight: '38vh', maxHeight: '38vh'}}>
@@ -22,10 +22,10 @@ export default function StockItemTile({onAddToCart, ...item}) {
                     {description}
                 </div>
                 <div className="mt-2">
-                    <AddToCartButton 
-                        hasSizesOrColours={hasSizesOrColours} 
-                        onClick={onAddToCart} 
-                        basePrice={basePrice} />
+                    <AddToCartButton
+                        hasSizesOrColours={hasSizesOrColour}
+                        basePrice={basePrice}
+                        onClick={onAddToCart} />
                 </div>
         </div>
     );
