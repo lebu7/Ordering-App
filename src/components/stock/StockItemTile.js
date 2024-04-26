@@ -1,3 +1,4 @@
+import AddToCartButton from "@/components/stock/AddToCartButton";
 import Image from "next/image";
 
 export default function StockItemTile({onAddToCart, ...item}) {
@@ -5,6 +6,7 @@ export default function StockItemTile({onAddToCart, ...item}) {
         image, name, description, basePrice,
         sizes, colours,
     } = item;
+    const hasSizesOrColours = sizes?.length > 0 || colours?.length > 0;
     return (
         <div 
             className="bg-gray-200 p-4 rounded-lg text-center hover:bg-white hover:shadow-md hover:shadow-black/35 transition-all" style={{minHeight: '38vh', maxHeight: '38vh'}}>
@@ -20,16 +22,10 @@ export default function StockItemTile({onAddToCart, ...item}) {
                     {description}
                 </div>
                 <div className="mt-2">
-                    <button 
-                        type="button"
-                        onClick={onAddToCart}
-                        className=" flex bg-primary text-white rounded-xl px-3 py-2 text-xs">
-                        {(sizes?.length > 0 || colours?.length > 0) ? (
-                            <span className="text-xs">Add to Cart (From Kes{basePrice})</span>
-                        ) : (
-                            <span className="text-xs">Add to cart Kes{basePrice}</span>
-                        )}
-                    </button>
+                    <AddToCartButton 
+                        hasSizesOrColours={hasSizesOrColours} 
+                        onClick={onAddToCart} 
+                        basePrice={basePrice} />
                 </div>
         </div>
     );
