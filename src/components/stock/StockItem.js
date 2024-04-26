@@ -116,7 +116,8 @@ export default function StockItem(stockItem) {
                 )}
                 <StockItemTile 
                     onAddToCart={handleAddToCartButtonClick} 
-                    {...stockItem} />
+                    {...stockItem} 
+                />
         </>
     );
 }

@@ -1,6 +1,7 @@
 'use client';
 import { CartContext, cartProductPrice } from "@/components/AppContext";
 import { useProfile } from "@/components/UseProfile";
+import ShoppingCart from "@/components/icons/ShoppingCart";
 import Trash from "@/components/icons/Trash";
 import AddressInputs from "@/components/layout/AddressInputs";
 import SectionHeaders from "@/components/layout/SectionHeaders";
@@ -34,17 +35,35 @@ export default function CartPage() {
         setAddress(prevAddress => ({...prevAddress, [propName]: value}));
     }
     return (
-        <section className="mt-8">
+        <section className="mt-8 mb-1 pb-1">
             <div className="text-center">
                 <SectionHeaders mainHeader={"Cart"} />
             </div>
-            <div className="mt-8 grid gap-8 grid-cols-2">
-                <div>
+            <div className="mt-8 mx-auto max-w-2xl grid gap-8 grid-cols-2">
+                <div className="grow">
                     {cartProducts?.length === 0 && (
-                        <div>No items in cart</div>
+                        <div className="text-center border-b">
+                            <p className="text-black text-lg font-semibold mt-3">Your cart is empty!</p>
+                            <div className="my-6">
+                                <div className="flex items-center justify-center mt-4 mb-6">
+                                    <ShoppingCart className="w-20 h-20  text-gray-500 "/>
+                                    {/*
+                                    <span className="absolute top-70 right-105 bg-primary text-white py-1 px-2 rounded-full text-xs leading-3">
+                                        {cartProducts.length}
+                                    </span>
+                                    */}
+                                </div>
+                            <p className="mt-7 text-sm text-gray-500">Browse our collection</p>
+                            <a href="/menu" className="mt-1" style={{display: 'flex', justifyContent: 'center'}} >
+                              <button type="button" className="bg-primary text-white px-1 py-2 mx-2 w-24 rounded-md text-xs font-semibold ">
+                                Shop now
+                              </button>
+                            </a>
+                            </div>
+                        </div>
                     )}
                     {cartProducts?.length > 0 && cartProducts.map((product, index)=> (
-                        <div className="flex items-center gap-4 mb-2 border-b py-4" key={product._id}>
+                        <div className="flex grow items-center gap-1 mb-2 border-b py-4" key={product._id}>
                             <div className="w-14">
                                 <Image className="rounded-md" src={product.image} width={150} height={150} alt={product.name} />
                             </div>
@@ -53,11 +72,15 @@ export default function CartPage() {
                                     {product.name}
                                 </h3>
                                 {product.size && (
-                                    <div className="text-sm text-primary font-semibold">
-                                        Size: 
-                                        <span className="text-xs text-gray-700 font-normal"> {product.size.name}</span>
-                                    </div>
+                                        <div className="text-sm text-primary font-semibold">
+                                            Size: 
+                                            <span className="text-xs text-gray-700 font-normal"> {product.size.name}</span>
+                                        </div>
                                 )}
+                                {/* <div className="text-sm text-primary font-semibold">
+                                        Quantity:
+                                    <span className="text-gray-700 text-xs font-normal">{product.colours.length} </span> 
+                                </div> */}
                                 {product.colours?.length > 0 && (
                                     <div className="">
                                             <p className="text-sm text-primary font-semibold">Colours:</p>
@@ -69,10 +92,12 @@ export default function CartPage() {
                                     </div>
                                 )}
                             </div>
-                            <div className="text-sm font-semibold">
-                                Kes {cartProductPrice(product)}
+                            <div className="mb-1 flex justify-end">
+                                <div className="mt-1 text-sm font-semibold">
+                                    Kes {cartProductPrice(product)}
+                                </div>
                             </div>
-                            <div className="ml-1">
+                            <div className="mr-0">
                                 <button 
                                     type="button"
                                     onClick={() => removeCartProduct(index)}
@@ -82,17 +107,40 @@ export default function CartPage() {
                             </div>
                         </div>
                     ))}
-                    <div className="text-right pr-10 font-semibold">
-                        <span className="text-md text-primary">Subtotal:&nbsp;</span>
-                        <span className="text-sm text-black">Kes {total}</span>
+                    <div className="border-b pb-1">
+                        <div className="mb-1 text-center">
+                            <p className="text-md text-black text-gray-700 font-semibold">Order Summary</p>
+                        </div>
+                            <div className="mb-1 grid gap-1 grid-cols-2">
+                                <div className="mb-2 mt-1 text-black">
+                                    <p className="text-sm ">
+                                        Cart items:
+                                        <span className="text-gray-500"> ({cartProducts.length})</span>
+                                    </p>
+                                    <p className="text-sm ">
+                                        Total items:
+                                        <span className="text-gray-500"> ({cartProducts.reduce((total, product) => 
+                                            product.colours ? total + product.colours.length : total, 0)})
+                                        </span>
+                                    </p>
+                                </div>
+                                <div className="mb-1 text-right pr-10 font-semibold">
+                                    <span className="text-md text-primary">Subtotal&nbsp;</span><br />
+                                    <span className="text-sm text-black">Kes {total}</span>
+                                </div>
+                            </div>
+                            <div className="mb-1">
+                                <p className="text-xs text-black ">Delivery fees not included yet.</p>
+                            </div>
                     </div>
                 </div>
-                <div className="bg-gray-100 p-4 rounded-lg min-h-[50vh] max-h-[50vh]">
+                <div className="max-w-md bg-gray-100 p-4 rounded-lg min-h-[48vh] max-h-[48vh]">
                     <h2 className="text-md text-center font-semibold text-primary mb-2">Place your order!</h2>
                     <form>
                         <AddressInputs 
                             addressProps={address}
                             setAddressProps={handleAddressChange}
+                            className=""
                         />                
                         <button className="text-sm" type="submit">Checkout (Kes {total})</button>
                     </form>

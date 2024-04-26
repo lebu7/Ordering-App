@@ -57,7 +57,7 @@ export default function ProfilePage() {
         setRedirectToItems(true);
     }
     if (redirectToItems) {
-        return redirect ('/');
+        return redirect ('/menu');
     }
 
     if (status === 'loading' || !profileFetched) {
