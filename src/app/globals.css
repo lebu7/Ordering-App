@@ -43,3 +43,9 @@ div.tabs > * {
 div.tabs > *.active{
     @apply bg-primary text-white;
 }
+
+.flying-button-parent button{
+    @apply flex bg-primary text-white rounded-xl px-3 py-2 text-xs;
+}
+
+

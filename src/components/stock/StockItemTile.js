@@ -1,4 +1,4 @@
-import AddToCartButton from "@/components/menu/AddToCartButton";
+import AddToCartButton from "@/components/stock/AddToCartButton";
 import Image from "next/image";
 
 export default function StockItemTile({onAddToCart, ...item}) {
@@ -23,6 +23,7 @@ export default function StockItemTile({onAddToCart, ...item}) {
                 </div>
                 <div className="mt-2">
                     <AddToCartButton
+                        image={image}
                         hasSizesOrColours={hasSizesOrColour}
                         basePrice={basePrice}
                         onClick={onAddToCart} />

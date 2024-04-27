@@ -1,8 +1,10 @@
 import { CartContext } from "@/components/AppContext";
+import FlyingButton from "react-flying-item";
 import Image from "next/image";
 import { useContext, useState } from "react";
 import StockItemTile from "./StockItemTile";
 import toast from "react-hot-toast";
+import ShoppingCart from "../icons/ShoppingCart";
 
 export default function StockItem(stockItem) {
     const {
@@ -13,25 +15,33 @@ export default function StockItem(stockItem) {
     const [selectedColours, setSelectedColours] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
     const {addToCart} = useContext(CartContext);
+    const [colorSelected, setColorSelected] = useState(false);
 
-    function handleAddToCartButtonClick() {
+    async function handleAddToCartButtonClick() {
         const hasOptions = sizes.length > 0 && colours.length > 0;
         if (hasOptions && !showPopup) {
             setShowPopup(true);
             return;
         }
-        addToCart(stockItem, selectedSize, selectedColours);
-        setShowPopup(false);
-        toast.success('Added to cart');
+        if (colorSelected) { // Only add to cart if at least one color is selected
+            addToCart(stockItem, selectedSize, selectedColours);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            setShowPopup(false);
+            toast.success(`${name} added to cart`);
+        } else {
+            toast.error('Please select at least one color');
         }
+    }
     function handleColoursClick(ev, colour) {
         const checked = ev.target.checked;
         if (checked) {
             setSelectedColours(prev => [...prev, colour]);
+            setColorSelected(true);
         } else {
             setSelectedColours(prev => {
                 return prev.filter(c => c.name !== colour.name);
             });
+            setColorSelected(false);
         }
     }   
 
@@ -99,12 +109,22 @@ export default function StockItem(stockItem) {
                                 ))}
                             </div>
                             )}
-                            <button 
-                                onClick={handleAddToCartButtonClick}
-                                className="primary sticky bottom-2 text-xs"
-                                type="button">
-                                    Add to cart KES {selectedPrice}
-                            </button>
+                            <div className="sticky bottom-0">
+                                {colorSelected && (
+                                    <FlyingButton 
+                                        className=""
+                                        targetTop={'5%'}
+                                        targetLeft={'95%'}
+                                        src={image}>
+                                        <div
+                                            onClick={handleAddToCartButtonClick}
+                                            className="primary sticky bottom-2 text-xs"
+                                            disabled={!colorSelected}>
+                                                <ShoppingCart className="inline-block w-4 h-4" /> {selectedPrice}
+                                        </div>
+                                    </FlyingButton>
+                                )}
+                            </div> 
                             <button
                                 className="mt-2 text-xs"
                                 onClick={() => setShowPopup(false)}>
