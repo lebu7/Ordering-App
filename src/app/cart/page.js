@@ -27,12 +27,24 @@ export default function CartPage() {
         }
     }, [profileData]);
 
-    let total = 0;
+    let subtotal = 0;
     for (const p of cartProducts) {
-        total += cartProductPrice(p);
+        subtotal += cartProductPrice(p);
     }
     function handleAddressChange(propName, value) {
         setAddress(prevAddress => ({...prevAddress, [propName]: value}));
+    }
+    async function proceedToCheckout(ev) {
+       const response = await fetch('/api/checkout', {
+           method: 'POST',
+           headers: {'Content-Type': 'application/json'},
+           body: JSON.stringify({
+               cartProducts,
+               address,
+           }),
+       }) ;
+       const link = await response.json()
+       window.location = link;
     }
     return (
         <section className="mt-8 mb-1 pb-1">
@@ -111,7 +123,7 @@ export default function CartPage() {
                         <div className="mb-1 text-center">
                             <p className="text-md text-black text-gray-700 font-semibold">Order Summary</p>
                         </div>
-                            <div className="mb-1 grid gap-1 grid-cols-2">
+                            <div className="flex mb-1 grid gap-1 grid-cols-2">
                                 <div className="mb-2 mt-1 text-black">
                                     <p className="text-sm ">
                                         Cart items:
@@ -124,11 +136,15 @@ export default function CartPage() {
                                         </span>
                                     </p>
                                 </div>
-                                <div className="mb-1 text-right pr-10 font-semibold">
-                                    <span className="text-md text-primary">Subtotal&nbsp;</span><br />
-                                    <span className="text-sm text-black">Kes {total}</span>
+                                <div className="mb-1 text-right pr-1 font-semibold items-center">
+                                    <span className="text-sm text-primary">Subtotal:&nbsp;</span>
+                                    <span className="text-sm text-black">Kes {subtotal}</span><br />
+                                    <span className="text-sm text-primary">Delivery:&nbsp;</span>
+                                    <span className="text-sm text-black">Kes {200}</span><br />
+                                    <span className="text-sm text-primary">Total:&nbsp;</span>
+                                    <span className="text-sm text-black">Kes {subtotal + 200}</span>
                                 </div>
-                            </div>
+                        </div>
                             <div className="mb-1">
                                 <p className="text-xs text-black ">Delivery fees not included yet.</p>
                             </div>
@@ -136,13 +152,13 @@ export default function CartPage() {
                 </div>
                 <div className="max-w-md bg-gray-100 p-4 rounded-lg min-h-[48vh] max-h-[48vh]">
                     <h2 className="text-md text-center font-semibold text-primary mb-2">Place your order!</h2>
-                    <form>
+                    <form onSubmit={proceedToCheckout} >
                         <AddressInputs 
                             addressProps={address}
                             setAddressProps={handleAddressChange}
                             className=""
                         />                
-                        <button className="text-sm" type="submit">Checkout (Kes {total})</button>
+                        <button className="text-sm" type="submit">Checkout (Kes {subtotal})</button>
                     </form>
                 </div>
             </div>

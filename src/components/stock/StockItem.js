@@ -25,7 +25,7 @@ export default function StockItem(stockItem) {
         }
         if (colorSelected) { // Only add to cart if at least one color is selected
             addToCart(stockItem, selectedSize, selectedColours);
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise(resolve => setTimeout(resolve, 600));
             setShowPopup(false);
             toast.success(`${name} added to cart`);
         } else {
@@ -109,22 +109,19 @@ export default function StockItem(stockItem) {
                                 ))}
                             </div>
                             )}
-                            <div className="sticky bottom-0">
-                                {colorSelected && (
-                                    <FlyingButton 
-                                        className=""
+                                <div className="flying-button-parent mt-4">
+                                    <FlyingButton
                                         targetTop={'5%'}
                                         targetLeft={'95%'}
-                                        src={image}>
+                                        src={colorSelected ? image : undefined}>
                                         <div
                                             onClick={handleAddToCartButtonClick}
-                                            className="primary sticky bottom-2 text-xs"
-                                            disabled={!colorSelected}>
+                                            className="primary sticky bottom-2"
+                                            >
                                                 <ShoppingCart className="inline-block w-4 h-4" /> {selectedPrice}
                                         </div>
                                     </FlyingButton>
-                                )}
-                            </div> 
+                                </div>
                             <button
                                 className="mt-2 text-xs"
                                 onClick={() => setShowPopup(false)}>
