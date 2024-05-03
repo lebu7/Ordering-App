@@ -6,12 +6,14 @@ import Trash from "@/components/icons/Trash";
 import AddressInputs from "@/components/layout/AddressInputs";
 import SectionHeaders from "@/components/layout/SectionHeaders";
 import Image from "next/image";
+import PayButton from "@/components/PayButton";
 import { useContext, useEffect, useState } from "react";
 
 export default function CartPage() {
     const {cartProducts,removeCartProduct} = useContext(CartContext);
     const [address, setAddress] = useState({});
     const {data:profileData} = useProfile();
+    const [checkoutClicked, setCheckoutClicked] = useState(false);
 
     useEffect(() => {
         if (profileData?.city) {
@@ -35,16 +37,19 @@ export default function CartPage() {
         setAddress(prevAddress => ({...prevAddress, [propName]: value}));
     }
     async function proceedToCheckout(ev) {
-       const response = await fetch('/api/checkout', {
+        ev.preventDefault();
+        const response = await fetch('/api/checkout', {
            method: 'POST',
            headers: {'Content-Type': 'application/json'},
            body: JSON.stringify({
                cartProducts,
                address,
            }),
-       }) ;
-       const link = await response.json()
-       window.location = link;
+       });
+
+       if (response.ok) {
+           window.location.href = '/checkout';
+       }
     }
     return (
         <section className="mt-8 mb-1 pb-1">
@@ -158,7 +163,10 @@ export default function CartPage() {
                             setAddressProps={handleAddressChange}
                             className=""
                         />                
-                        <button className="text-sm" type="submit">Checkout (Kes {subtotal})</button>
+                        <button onClick={() => setCheckoutClicked(true)} className="text-sm" type="submit">Checkout (Kes {subtotal})</button>
+                        <div className="mt-2 text-xs font-semibold">
+                            {checkoutClicked && <PayButton subtotal={subtotal}  />}
+                        </div>
                     </form>
                 </div>
             </div>
