@@ -4,16 +4,19 @@ import { useProfile } from "@/components/UseProfile";
 import ShoppingCart from "@/components/icons/ShoppingCart";
 import Trash from "@/components/icons/Trash";
 import AddressInputs from "@/components/layout/AddressInputs";
+import DeliveryOptions from "@/components/layout/DeliveryOptions";
 import SectionHeaders from "@/components/layout/SectionHeaders";
 import Image from "next/image";
 import PayButton from "@/components/PayButton";
 import { useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function CartPage() {
     const {cartProducts,removeCartProduct} = useContext(CartContext);
     const [address, setAddress] = useState({});
     const {data:profileData} = useProfile();
-    const [checkoutClicked, setCheckoutClicked] = useState(false);
+    const [showDeliveryOptions, setShowDeliveryOptions] = useState(false);
+    const [selectedOption, setSelectedOption] = useState(null);
 
     useEffect(() => {
         if (profileData?.city) {
@@ -33,9 +36,46 @@ export default function CartPage() {
     for (const p of cartProducts) {
         subtotal += cartProductPrice(p);
     }
+
+    useEffect(() => {
+        if (cartProducts.length === 0) {
+            setSelectedOption(null);
+        }
+    }, [cartProducts]);
+
+    const handleOptionChange = (event) => {
+        setSelectedOption(event.target.value);
+        let message = `Selected ${event.target.value}`;
+        let fee = 0;
+        if (event.target.value === "Door Delivery") {
+            fee = 200;
+        } else if (event.target.value === "CBD Pickup") {
+            fee = 0;
+        }
+        message += ` + Kes ${fee}`;
+        toast.success(message);
+    };
+
+    const [deliveryFee, setDeliveryFee] = useState(200);
+    const calculateSubtotal = () => {
+        let updatedSubtotal = subtotal;
+        let adjustedDeliveryFee = deliveryFee;
+
+        if (selectedOption === "CBD Pickup" || !selectedOption) {
+            adjustedDeliveryFee = 0;
+        }
+        return updatedSubtotal + adjustedDeliveryFee;
+    };
+    const calculateSubtotalWithoutDelivery = () => {
+        return subtotal;
+    };
     function handleAddressChange(propName, value) {
         setAddress(prevAddress => ({...prevAddress, [propName]: value}));
     }
+
+    const handleCheckoutClick = () => {
+        setShowDeliveryOptions(true);
+      };
     async function proceedToCheckout(ev) {
         ev.preventDefault();
         const response = await fetch('/api/checkout', {
@@ -57,7 +97,7 @@ export default function CartPage() {
                 <SectionHeaders mainHeader={"Cart"} />
             </div>
             <div className="mt-8 mx-auto max-w-2xl grid gap-8 grid-cols-2">
-                <div className="grow">
+                <div className="grow overflow-y-auto" style={{maxHeight: 'calc(100vh - 200px)', "scrollbar-width": "thin", "scrollbar-color": "transparent transparent" /* color */, "&::-webkit-scrollbar": "0px solid transparent" /* width */}} >
                     {cartProducts?.length === 0 && (
                         <div className="text-center border-b">
                             <p className="text-black text-lg font-semibold mt-3">Your cart is empty!</p>
@@ -144,29 +184,93 @@ export default function CartPage() {
                                 <div className="mb-1 text-right pr-1 font-semibold items-center">
                                     <span className="text-sm text-primary">Subtotal:&nbsp;</span>
                                     <span className="text-sm text-black">Kes {subtotal}</span><br />
-                                    <span className="text-sm text-primary">Delivery:&nbsp;</span>
-                                    <span className="text-sm text-black">Kes {200}</span><br />
+                                    {/*selectedOption && (
+                                        <div>
+                                            <span className="text-sm text-primary">Delivery:&nbsp;</span>
+                                            <span className="text-sm text-black">Kes {selectedOption === "Door Delivery" ? 200 : 0}</span><br />
+                                        </div>
+                                    )*/}
                                     <span className="text-sm text-primary">Total:&nbsp;</span>
-                                    <span className="text-sm text-black">Kes {subtotal + 200}</span>
+                                    <span className="text-sm text-black">Kes {selectedOption === "Door Delivery" ? 200 + subtotal : subtotal}</span>
                                 </div>
                         </div>
-                            <div className="mb-1">
-                                <p className="text-xs text-black ">Delivery fees not included yet.</p>
-                            </div>
+                                <div className="mb-1">
+                                    {!selectedOption ? (
+                                        <p className="text-xs text-black ">Delivery fees not included yet.</p>
+                                    ) : (
+                                        <p className="text-xs text-black mt-1 items-center">
+                                            {selectedOption === "Door Delivery" ? (
+                                                <span className="text-black">
+                                                    Kes <span className="text-primary font-semibold">{deliveryFee}</span> Included for Door Delivery.
+                                                </span>
+                                            ) : selectedOption === "CBD Pickup" ? (
+                                                <span className="text-black">
+                                                    No extra fee for CBD Pickups (Kes <span className=" text-primary font-semibold">{deliveryFee - deliveryFee}</span>)
+                                                </span>
+                                            ) : null}
+                                        </p>
+                                    )}
+                                </div>
                     </div>
                 </div>
-                <div className="max-w-md bg-gray-100 p-4 rounded-lg min-h-[48vh] max-h-[48vh]">
+                <div className={`max-w-md bg-gray-100 p-4 rounded-lg ${cartProducts.length === 0 ? 'min-h-[47vh] max-h-[47vh]' : (showDeliveryOptions ? 'min-h-[62vh] max-h-[62vh]' : 'min-h-[53vh] max-h-[53vh]')}`}>
                     <h2 className="text-md text-center font-semibold text-primary mb-2">Place your order!</h2>
                     <form onSubmit={proceedToCheckout} >
                         <AddressInputs 
                             addressProps={address}
                             setAddressProps={handleAddressChange}
                             className=""
-                        />                
-                        <button onClick={() => setCheckoutClicked(true)} className="text-sm" type="submit">Checkout (Kes {subtotal})</button>
-                        <div className="mt-2 text-xs font-semibold">
-                            {checkoutClicked && <PayButton subtotal={subtotal}  />}
-                        </div>
+                        />        
+                        {cartProducts.length === 0 && (
+                            <button 
+                                type="button"
+                                onClick={() => window.location.href = '/menu'}
+                                className="text-xs bg-primary text-white rounded-lg px-5 py-2 w-full"
+                            >
+                                Add items to cart
+                            </button>
+                        )}
+                        {cartProducts.length > 0 && (
+                            <div>
+                                {!showDeliveryOptions && (
+                                    <div className="mt-4">
+                                        <button 
+                                            type="button"
+                                            onClick={() => window.location.href = '/menu'}
+                                            className="text-xs bg-white text-black rounded-lg px-5 py-2 w-full mb-1"
+                                        >
+                                            Continue shopping
+                                        </button>
+                                        <button 
+                                            onClick={handleCheckoutClick}
+                                            className="text-xs bg-primary text-white rounded-lg px-5 py-2 w-full"
+                                        >
+                                            Checkout
+                                        </button>
+                                    </div>
+                                )}
+                                {showDeliveryOptions && <DeliveryOptions 
+                                    subtotalWithoutDelivery={calculateSubtotalWithoutDelivery()}
+                                    selectedOption={selectedOption}
+                                    onOptionChange={handleOptionChange} />}
+                                {showDeliveryOptions && (
+                                    <div className="">
+                                        {!selectedOption && (
+                                            <button 
+                                                type="button"
+                                                disabled
+                                                className="text-xs bg-primary text-white opacity-50 rounded-lg px-5 py-2 w-full  border-gray-300 cursor-pointer "
+                                            >
+                                                Select delivery option
+                                            </button>
+                                        )}
+                                        {selectedOption && (
+                                            <PayButton total={calculateSubtotal()} />
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </form>
                 </div>
             </div>

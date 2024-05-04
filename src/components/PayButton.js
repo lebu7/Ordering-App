@@ -1,20 +1,27 @@
 import toast from "react-hot-toast";
 import { PaystackButton } from "react-paystack";
-import { CartContext } from "@/components/AppContext";
-import React, { useContext } from "react";
+import React from "react";
 import { useProfile } from "@/components/UseProfile";
 
-const PayButton = ({subtotal}) => {
+const PayButton = ({total}) => {
     const {data:profileData} = useProfile();
 
     const config = {
-        reference: (new Date()).getTime().toString(),
-        email: profileData?.email || "user@example.com",
-        amount: 5 * 100,
         publicKey: 'pk_live_373d3cbcc52113b61b15b5ff4eb908577584669d',
+        email: profileData?.email ,
+        phone: profileData?.phone,
+        amount: total * 100,
         firstname: profileData?.name?.split(" ")[0] || '',
         lastname: profileData?.name?.split(" ")[1] || '',
         currency: 'KES',
+        channels: ['mobile_money', 'card'],
+        metadata: {
+            estate: profileData?.estate,
+            city: profileData?.city,
+            streetaddress: profileData?.streetAddress,
+            country: profileData?.country,
+            date: new Date().getTime().toString(),
+          },
       };
 
     const handlePaystackSuccessAction = (reference) => {
@@ -31,15 +38,15 @@ const PayButton = ({subtotal}) => {
 
   const componentProps = {
     ...config,
-    text: `Pay Kes ${subtotal}`,
+    text: `Pay Kes ${total}`,
     onSuccess: (reference) => handlePaystackSuccessAction(reference),
     onClose: handlePaystackCloseAction,
   };
 
 
     return (
-        <div className="">
-            <PaystackButton {...componentProps} />
+        <div className="mt-1">
+            <PaystackButton {...componentProps} className="text-xs bg-primary text-white rounded-lg px-5 py-2 w-full" />
         </div>
     );
 };
