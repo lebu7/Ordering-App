@@ -1,13 +1,17 @@
 import toast from "react-hot-toast";
 import { PaystackButton } from "react-paystack";
-import React from "react";
+import React, { useContext } from "react";
 import { useProfile } from "@/components/UseProfile";
+import { CartContext } from "@/components/AppContext";
 
-const PayButton = ({total}) => {
+const PayButton = ({total, selectedOption}) => {
     const {data:profileData} = useProfile();
+    const { cartProducts } = useContext(CartContext);
+
+    const publicKey = 'pk_test_db6371273c98c4828f8b8cd78aaeeec87223e0e2';
 
     const config = {
-        publicKey: 'pk_live_373d3cbcc52113b61b15b5ff4eb908577584669d',
+        publicKey: publicKey,
         email: profileData?.email ,
         phone: profileData?.phone,
         amount: total * 100,
@@ -24,11 +28,40 @@ const PayButton = ({total}) => {
           },
       };
 
-    const handlePaystackSuccessAction = (reference) => {
-    console.log(reference);
-    // Add any other actions you want to perform on success
-        toast.success('Payment Successful');
-  };
+        const handlePaystackSuccessAction = async (reference) => {
+            console.log(reference);
+        // Add any other actions you want to perform on success
+            const data = {
+                reference,
+                email: profileData?.email,
+                phone: profileData?.phone,
+                firstname: profileData?.name?.split(' ')[0] || '',
+                lastname: profileData?.name?.split(' ')[1] || '',
+                cartProducts,
+                amount: total * 100,
+                selectedOption,
+                ...config.metadata,
+            };
+            try {
+                // Send the data to the server
+                const response = await fetch('/api/orders', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(data),
+                });
+                
+                if (response.ok) {
+                    toast.success('Payment Successful');
+                  } else {
+                    toast.error('Failed to save payment data');
+                  }
+                } catch (error) {
+                  toast.error('Failed to save payment data');
+                  console.error(error);
+                }
+        };
 
   const handlePaystackCloseAction = () => {
     console.log('closed');

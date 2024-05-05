@@ -265,7 +265,7 @@ export default function CartPage() {
                                             </button>
                                         )}
                                         {selectedOption && (
-                                            <PayButton total={calculateSubtotal()} />
+                                            <PayButton total={calculateSubtotal()} selectedOption={selectedOption} />
                                         )}
                                     </div>
                                 )}
