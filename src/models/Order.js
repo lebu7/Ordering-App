@@ -10,7 +10,7 @@ const OrderSchema = new Schema({
   selectedOption: String,
   cartProducts: Object,
   total: Number,
-  transactionId: String,
+  orderId: String,
   paid: {type: Boolean, default: false},
   date: {type: Date, default: Date.now},
 }, {timestamps: true});

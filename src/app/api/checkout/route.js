@@ -13,7 +13,7 @@ export async function POST(req, res) {
             const session = await getServerSession(authOptions);
             const userEmail = session?.user?.email;
             const date = new Date().getTime();
-            const transactionId = reference.transaction;
+            const orderId = reference.transaction;
 
             const orderDoc = await Order.create({
                 userEmail,
@@ -21,8 +21,8 @@ export async function POST(req, res) {
                 selectedOption,
                 cartProducts, 
                 total,
-                transactionId,
-                paid: transactionId ? true : false,
+                orderId,
+                paid: orderId ? true : false,
                 date,
             });
   // Order created successfully

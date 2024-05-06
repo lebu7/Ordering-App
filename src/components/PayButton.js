@@ -1,12 +1,16 @@
 import toast from "react-hot-toast";
 import { PaystackButton } from "react-paystack";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useProfile } from "@/components/UseProfile";
 import { CartContext } from "@/components/AppContext";
+import { useRouter } from "next/navigation";
 
 const PayButton = ({total, selectedOption, address}) => {
+    const router = useRouter();
     const {data:profileData} = useProfile();
     const { cartProducts } = useContext(CartContext);
+
+    const [isCheckoutComplete, setIsCheckoutComplete] = useState(false); // Track session completion
 
     const publicKey = 'pk_test_db6371273c98c4828f8b8cd78aaeeec87223e0e2';
 
@@ -32,6 +36,7 @@ const handlePaystackSuccessAction = async (reference) => {
         console.log(reference);
         // Add any other actions you want to perform on success
         const { reference: ref, message, transaction, status } = reference;  // Destructuring assignment
+
         if (status === 'success' && message === 'Approved') {
             const response = await fetch('/api/checkout', {
               method: 'POST',
@@ -51,6 +56,8 @@ const handlePaystackSuccessAction = async (reference) => {
               console.log('Data sent to server successfully');
               toast.success('Payment Successful!');
               toast.success(`Order ID: ${transaction}`)
+              setIsCheckoutComplete(true); // Mark session complete on server success
+              router.push(`/orders/${transaction}`); // Redirect to orders page with transaction ID
             } else {
               console.error('Failed to send data to server:', await response.text());
               toast.error('Payment Successful! Error processing order. Please contact support.');
