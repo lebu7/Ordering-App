@@ -4,7 +4,7 @@ import React, { useContext } from "react";
 import { useProfile } from "@/components/UseProfile";
 import { CartContext } from "@/components/AppContext";
 
-const PayButton = ({total, selectedOption}) => {
+const PayButton = ({total, selectedOption, address}) => {
     const {data:profileData} = useProfile();
     const { cartProducts } = useContext(CartContext);
 
@@ -28,40 +28,35 @@ const PayButton = ({total, selectedOption}) => {
           },
       };
 
-        const handlePaystackSuccessAction = async (reference) => {
-            console.log(reference);
+      const sendDataToServer = async () => {
+        try {
+          const response = await fetch('/api/checkout', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+             address,
+             selectedOption,
+             cartProducts,
+             total,
+            }),
+          });
+          if (response.ok) {
+            console.log('Data sent to server successfully');
+          } else {
+            console.error('Failed to send data to server');
+          }
+        } catch (error) {
+          console.error('Error sending data to server:', error);
+        }
+      };
+
+const handlePaystackSuccessAction = async (reference) => {
+        console.log(reference);
         // Add any other actions you want to perform on success
-            const data = {
-                reference,
-                email: profileData?.email,
-                phone: profileData?.phone,
-                firstname: profileData?.name?.split(' ')[0] || '',
-                lastname: profileData?.name?.split(' ')[1] || '',
-                cartProducts,
-                amount: total * 100,
-                selectedOption,
-                ...config.metadata,
-            };
-            try {
-                // Send the data to the server
-                const response = await fetch('/api/orders', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(data),
-                });
-                
-                if (response.ok) {
-                    toast.success('Payment Successful');
-                  } else {
-                    toast.error('Failed to save payment data');
-                  }
-                } catch (error) {
-                  toast.error('Failed to save payment data');
-                  console.error(error);
-                }
-        };
+            toast.success('Payment Successful');
+    };
 
   const handlePaystackCloseAction = () => {
     console.log('closed');

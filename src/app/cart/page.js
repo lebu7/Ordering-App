@@ -78,19 +78,8 @@ export default function CartPage() {
       };
     async function proceedToCheckout(ev) {
         ev.preventDefault();
-        const response = await fetch('/api/checkout', {
-           method: 'POST',
-           headers: {'Content-Type': 'application/json'},
-           body: JSON.stringify({
-               cartProducts,
-               address,
-           }),
-       });
 
-       if (response.ok) {
-           window.location.href = '/checkout';
-       }
-    }
+    };
     return (
         <section className="mt-8 mb-1 pb-1">
             <div className="text-center">
@@ -265,7 +254,7 @@ export default function CartPage() {
                                             </button>
                                         )}
                                         {selectedOption && (
-                                            <PayButton total={calculateSubtotal()} selectedOption={selectedOption} />
+                                            <PayButton total={calculateSubtotal()} selectedOption={selectedOption} address={address} />
                                         )}
                                     </div>
                                 )}
