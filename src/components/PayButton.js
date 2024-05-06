@@ -2,7 +2,7 @@ import toast from "react-hot-toast";
 import { PaystackButton } from "react-paystack";
 import React, { useContext, useState } from "react";
 import { useProfile } from "@/components/UseProfile";
-import { CartContext, clearCart} from "@/components/AppContext";
+import { CartContext} from "@/components/AppContext";
 import { useRouter } from "next/navigation";
 
 const PayButton = ({total, selectedOption, address}) => {
@@ -69,7 +69,6 @@ const handlePaystackSuccessAction = async (reference) => {
             console.log('Payment not successful:', reference);
             toast.error('Payment Failed. Please try again.');
           }
-
     };
 
   const handlePaystackCloseAction = () => {
