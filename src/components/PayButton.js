@@ -28,34 +28,38 @@ const PayButton = ({total, selectedOption, address}) => {
           },
       };
 
-      const sendDataToServer = async () => {
-        try {
-          const response = await fetch('/api/checkout', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-             address,
-             selectedOption,
-             cartProducts,
-             total,
-            }),
-          });
-          if (response.ok) {
-            console.log('Data sent to server successfully');
-          } else {
-            console.error('Failed to send data to server');
-          }
-        } catch (error) {
-          console.error('Error sending data to server:', error);
-        }
-      };
-
 const handlePaystackSuccessAction = async (reference) => {
         console.log(reference);
         // Add any other actions you want to perform on success
-            toast.success('Payment Successful');
+        const { reference: ref, message, transaction, status } = reference;  // Destructuring assignment
+        if (status === 'success' && message === 'Approved') {
+            const response = await fetch('/api/checkout', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                address,
+                selectedOption,
+                cartProducts,
+                total,
+                reference,
+              }),
+            });
+        
+            if (response.ok) {
+              console.log('Data sent to server successfully');
+              toast.success('Payment Successful!');
+              toast.success(`Order ID: ${transaction}`)
+            } else {
+              console.error('Failed to send data to server:', await response.text());
+              toast.error('Payment Successful! Error processing order. Please contact support.');
+            }
+          } else {
+            console.log('Payment not successful:', reference);
+            toast.error('Payment Failed. Please try again.');
+          }
+
     };
 
   const handlePaystackCloseAction = () => {
