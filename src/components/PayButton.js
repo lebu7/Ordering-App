@@ -2,13 +2,13 @@ import toast from "react-hot-toast";
 import { PaystackButton } from "react-paystack";
 import React, { useContext, useState } from "react";
 import { useProfile } from "@/components/UseProfile";
-import { CartContext } from "@/components/AppContext";
+import { CartContext, clearCart} from "@/components/AppContext";
 import { useRouter } from "next/navigation";
 
 const PayButton = ({total, selectedOption, address}) => {
     const router = useRouter();
     const {data:profileData} = useProfile();
-    const { cartProducts } = useContext(CartContext);
+    const { cartProducts, clearCart } = useContext(CartContext);
 
     const [isCheckoutComplete, setIsCheckoutComplete] = useState(false); // Track session completion
 
@@ -56,6 +56,9 @@ const handlePaystackSuccessAction = async (reference) => {
               console.log('Data sent to server successfully');
               toast.success('Payment Successful!');
               toast.success(`Order ID: ${transaction}`)
+
+              clearCart();
+
               setIsCheckoutComplete(true); // Mark session complete on server success
               router.push(`/orders/${transaction}`); // Redirect to orders page with transaction ID
             } else {
