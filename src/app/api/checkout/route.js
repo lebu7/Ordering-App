@@ -10,6 +10,7 @@ export async function POST(req, res) {
 
         try {
             const { cartProducts, address, selectedOption, total, reference } = await req.json();
+
             const session = await getServerSession(authOptions);
             const userEmail = session?.user?.email;
             const date = new Date().getTime();
@@ -25,10 +26,18 @@ export async function POST(req, res) {
                 paid: orderId ? true : false,
                 date,
             });
-  // Order created successfully
-    return NextResponse.json({ message: "Order created successfully!", order: orderDoc });
+    // Order created successfully
+
+    // Extract _id and construct dynamic URL
+    const { _id } = orderDoc; // Destructure _id
+    const successURL = `${process.env.NEXTAUTH_URL}/orders/${_id.toString()}`;
+
+    return NextResponse.json({ 
+        message: "Order created successfully!", 
+        order: orderDoc,  
+        successURL,
+    });
     } catch (error) {
-    // Order creation failed
     console.error('Error creating order:', error);
     return NextResponse.json({ error: "Failed to create order." }, { status: 500 });
     }
