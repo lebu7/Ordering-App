@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import TotalDisplay from "./TotalDisplay";
 
-const DeliveryOptions = ({ subtotalWithoutDelivery, selectedOption, onOptionChange }) => {
+const DeliveryOptions = ({ subtotalWithoutDelivery, selectedOption, deliveryFee, setDeliveryFee, onOptionChange }) => {
     
 
   return (
@@ -28,18 +29,11 @@ const DeliveryOptions = ({ subtotalWithoutDelivery, selectedOption, onOptionChan
           CBD Pickup
         </label>
       </div>
-      <div className="my-2">
-        <p className="text-xs text-black font-semibold mt-1">
-            <span className="text-xs text-primary">
-                Items Total: 
-            </span> Kes {subtotalWithoutDelivery}
-        </p>
-        <p className="text-xs text-black font-semibold mt-1">
-            <span className="text-xs text-primary">
-                Total:  
-            </span>
-          Kes {subtotalWithoutDelivery + (selectedOption === "Door Delivery" ? 200 : 0)}
-        </p>
+      <div className="mt-2">
+        <TotalDisplay
+          subtotalWithoutDelivery={subtotalWithoutDelivery}
+          total={subtotalWithoutDelivery + deliveryFee}
+        />
       </div>
     </div>
   );

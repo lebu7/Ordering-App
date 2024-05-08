@@ -8,9 +8,11 @@ import SectionHeaders from "@/components/layout/SectionHeaders";
 import RegionPopup from "@/components/layout/RegionPopup";
 import CartProduct from "@/components/stock/CartProduct";
 import PayButton from "@/components/PayButton";
+import PayButtonTwo from "@/components/PayButtonTwo";
 import MakeOrderButton from "@/components/MakeOrderButton";
 import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import TotalDisplay from "@/components/layout/TotalDisplay";
 
 export default function CartPage() {
     const {cartProducts,removeCartProduct} = useContext(CartContext);
@@ -192,7 +194,11 @@ export default function CartPage() {
                                 </div>
                     </div>
                 </div>
-                <div className={`max-w-md bg-gray-100 p-4 rounded-lg ${cartProducts.length === 0 ? 'min-h-[47vh] max-h-[47vh]' : (showDeliveryOptions ? 'min-h-[62vh] max-h-[62vh]' : 'min-h-[53vh] max-h-[53vh]')}`}>
+                <div className={`max-w-md bg-gray-100 p-4 rounded-lg 
+                    ${cartProducts.length === 0 ? 'min-h-[47vh] max-h-[47vh]' : 
+                    (showDeliveryOptions && selectedOption ? 'min-h-[69vh] max-h-[69vh]' : 
+                    (showDeliveryOptions ? 'min-h-[62vh] max-h-[62vh]' :   'min-h-[53vh] max-h-[53vh]'))}`}
+                >
                     <h2 className="text-md text-center font-semibold text-primary mb-2">Place your order!</h2>
                     <form onSubmit={proceedToCheckout} >
                         <AddressInputs 
@@ -238,10 +244,14 @@ export default function CartPage() {
                                 )}
 
                                 {/* Conditionally render delivery options based on selectedRegion */}
-                                {showDeliveryOptions && <DeliveryOptions 
-                                    subtotalWithoutDelivery={calculateSubtotalWithoutDelivery()}
-                                    selectedOption={selectedOption}
-                                    onOptionChange={handleOptionChange} />}
+                                {showDeliveryOptions && 
+                                    <DeliveryOptions 
+                                        subtotalWithoutDelivery={calculateSubtotalWithoutDelivery()}
+                                        selectedOption={selectedOption}
+                                        deliveryFee={deliveryFee} 
+                                        setDeliveryFee={setDeliveryFee}
+                                        onOptionChange={handleOptionChange} 
+                                    />}
                                 {showDeliveryOptions && (
                                     <div className="">
                                         {!selectedOption && (
@@ -254,13 +264,32 @@ export default function CartPage() {
                                             </button>
                                         )}
                                         {selectedOption && (
-                                            <PayButton total={calculateSubtotal()} selectedOption={selectedOption} address={address} />
-                                        )}
+                                            <div className="text-center">
+                                              <PayButton
+                                                className="text-xs items-center text-center"
+                                                total={calculateSubtotal()}
+                                                selectedOption={selectedOption}
+                                                address={address}
+                                              />
+                                              <p className="text-xs text-black text-center">or</p>
+                                              <MakeOrderButton
+                                                className="text-xs items-center text-center"
+                                                total={calculateSubtotal()}
+                                                selectedOption={selectedOption}
+                                                address={address}
+                                              />
+                                            </div>
+                                          )}
+                                          
                                     </div>
                                 )}
                                 {!showDeliveryOptions && selectedRegion === "Outside Nairobi" && (
                                     <div>
-                                        <MakeOrderButton address={address} total={calculateSubtotal()} />
+                                        <TotalDisplay 
+                                            subtotalWithoutDelivery={subtotal}
+                                            total={subtotal}
+                                        />
+                                        <PayButtonTwo address={address} total={calculateSubtotal()} />
                                     </div>
                                   )}
                                   

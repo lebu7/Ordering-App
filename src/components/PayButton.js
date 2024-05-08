@@ -100,7 +100,9 @@ const handlePaystackSuccessAction = async (reference) => {
 
     return (
         <div className="mt-1">
-            <PaystackButton {...componentProps} className="text-xs bg-primary text-white rounded-lg px-5 py-2 w-full" />
+            <PaystackButton 
+                {...componentProps} 
+                className="text-xs bg-white text-black rounded-lg px-5 py-2 w-full" />
         </div>
     );
 };

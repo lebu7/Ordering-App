@@ -3,7 +3,7 @@ import { CartContext } from "@/components/AppContext";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-const MakeOrderButton = ({ address, total }) => {
+const MakeOrderButton = ({ address, total, selectedOption }) => {
   const router = useRouter();
   const { cartProducts, clearCart } = useContext(CartContext);
   const [isOrderSubmitted, setIsOrderSubmitted] = useState(false);
@@ -20,6 +20,7 @@ const MakeOrderButton = ({ address, total }) => {
           address,
           cartProducts,
           total,
+          selectedOption,
           reference,
         }),
       });
@@ -27,7 +28,11 @@ const MakeOrderButton = ({ address, total }) => {
       if (response.ok) {
         const data = await response.json();
         console.log("Order submission response:", data);
-        toast.success("Order submitted successfully!");
+
+        // Customize success toast message based on selectedOption
+        const successMessage = `Order submitted! Pay on ${selectedOption}`;
+        toast.success(successMessage);
+
         clearCart();
         setIsOrderSubmitted(true); // Mark order submission complete
 
@@ -36,11 +41,11 @@ const MakeOrderButton = ({ address, total }) => {
         }
       } else {
         console.error("Error submitting order:", await response.text());
-        toast.error("An error occurred while placing your order. Please try again.");
+        toast.error("Payment Successful! Error processing order. Please contact support.'");
       }
     } catch (error) {
       console.error("Error submitting order:", error);
-      toast.error("An unexpected error occurred. Please try again.");
+      toast.error("Payment Failed. Please try again.");
     }
   };
 
@@ -60,7 +65,7 @@ const MakeOrderButton = ({ address, total }) => {
         }`}
         onClick={handleSubmitOrder}
       >
-        {isOrderSubmitted ? "Order Submitted" : "Make Order"}
+        {isOrderSubmitted ? "Order Submitted" : "Pay on delivery"}
       </button>
     </div>
   );
