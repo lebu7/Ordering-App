@@ -5,8 +5,10 @@ import ShoppingCart from "@/components/icons/ShoppingCart";
 import AddressInputs from "@/components/layout/AddressInputs";
 import DeliveryOptions from "@/components/layout/DeliveryOptions";
 import SectionHeaders from "@/components/layout/SectionHeaders";
+import RegionPopup from "@/components/layout/RegionPopup";
 import CartProduct from "@/components/stock/CartProduct";
 import PayButton from "@/components/PayButton";
+import MakeOrderButton from "@/components/MakeOrderButton";
 import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -16,6 +18,9 @@ export default function CartPage() {
     const {data:profileData} = useProfile();
     const [showDeliveryOptions, setShowDeliveryOptions] = useState(false);
     const [selectedOption, setSelectedOption] = useState(null);
+    const [showRegionPopup, setShowRegionPopup] = useState(false);
+    const [selectedRegion, setSelectedRegion] = useState(null);
+
 
     useEffect(() => {
         if (profileData?.city) {
@@ -73,7 +78,24 @@ export default function CartPage() {
     }
 
     const handleCheckoutClick = () => {
-        setShowDeliveryOptions(true);
+        setShowRegionPopup(true);
+        // setShowDeliveryOptions(true);
+      };
+
+      const handleSelectRegion = (region) => {
+        setSelectedRegion(region);
+        setShowRegionPopup(region === "Nairobi Region");
+        setShowDeliveryOptions(region === "Nairobi Region");
+        console.log("showDeliveryOptions after selection:", showDeliveryOptions);
+        // Conditionally render delivery options or Make Order button
+        if (region === "Nairobi Region") {
+            setShowDeliveryOptions(true); // Show delivery options for Nairobi Region
+        } else {
+            if (region === "Outside Nairobi") {
+                setShowDeliveryOptions(false);
+            } // Hide delivery options for Outside Nairobi
+            // Handle "Outside Nairobi" selection (create Make Order button logic here)
+        }
       };
     async function proceedToCheckout(ev) {
         ev.preventDefault();
@@ -183,7 +205,7 @@ export default function CartPage() {
                         )}
                         {cartProducts.length > 0 && (
                             <div>
-                                {!showDeliveryOptions && (
+                                {!showDeliveryOptions && !selectedRegion && (
                                     <div className="mt-4">
                                         <button 
                                             type="button"
@@ -200,6 +222,16 @@ export default function CartPage() {
                                         </button>
                                     </div>
                                 )}
+                                
+                                {/* Conditionally render region popup */}
+                                {showRegionPopup && (
+                                    <RegionPopup
+                                        onClose={() => setShowRegionPopup(false)}
+                                        onSelectRegion={handleSelectRegion}
+                                    />
+                                )}
+
+                                {/* Conditionally render delivery options based on selectedRegion */}
                                 {showDeliveryOptions && <DeliveryOptions 
                                     subtotalWithoutDelivery={calculateSubtotalWithoutDelivery()}
                                     selectedOption={selectedOption}
@@ -220,6 +252,12 @@ export default function CartPage() {
                                         )}
                                     </div>
                                 )}
+                                {!showDeliveryOptions && selectedRegion === "Outside Nairobi" && (
+                                    <div>
+                                        <MakeOrderButton address={address} total={calculateSubtotal()} />
+                                    </div>
+                                  )}
+                                  
                             </div>
                         )}
                     </form>
