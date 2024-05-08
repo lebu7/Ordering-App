@@ -168,20 +168,26 @@ export default function CartPage() {
                                 </div>
                         </div>
                                 <div className="mb-1">
-                                    {!selectedOption ? (
-                                        <p className="text-xs text-black ">Delivery fees not included yet.</p>
+                                    {selectedRegion === "Outside Nairobi" ? (
+                                        <p className="text-xs text-black mt-2">Delivery fees charged by your <span className="text-primary font-semibold">Courier</span> choice.</p>
                                     ) : (
-                                        <p className="text-xs text-black mt-1 items-center">
-                                            {selectedOption === "Door Delivery" ? (
-                                                <span className="text-black">
-                                                    Kes <span className="text-primary font-semibold">{deliveryFee}</span> Included for Door Delivery.
-                                                </span>
-                                            ) : selectedOption === "CBD Pickup" ? (
-                                                <span className="text-black">
-                                                    No extra fee for CBD Pickups (Kes <span className=" text-primary font-semibold">{deliveryFee - deliveryFee}</span>)
-                                                </span>
-                                            ) : null}
-                                        </p>
+                                        <div>
+                                        {!selectedOption ? (
+                                            <p className="text-xs text-black ">Delivery fees not included yet.</p>
+                                        ) : (
+                                            <p className="text-xs text-black mt-1 items-center">
+                                                {selectedOption === "Door Delivery" ? (
+                                                    <span className="text-black">
+                                                        Kes <span className="text-primary font-semibold">{deliveryFee}</span> Included for Door Delivery.
+                                                    </span>
+                                                ) : selectedOption === "CBD Pickup" ? (
+                                                    <span className="text-black">
+                                                        No extra fee for CBD Pickups (Kes <span className=" text-primary font-semibold">{deliveryFee - deliveryFee}</span>)
+                                                    </span>
+                                                ) : null}
+                                            </p>
+                                        )}
+                                        </div>
                                     )}
                                 </div>
                     </div>
