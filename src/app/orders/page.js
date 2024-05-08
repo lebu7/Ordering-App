@@ -20,10 +20,12 @@ export default function OrdersPage() {
             <UserTabs isAdmin={profile.admin} />
             <div className="mt-8 max-w-2xl mx-auto">
                 {orders?.length > 0 && orders.map(order => (
-                    <div className="bg-gray-100 rounded-lg py-3 px-4 grid grid-cols-5 gap-2 mb-2 text-sm" key={order._id}>
+                    <div className="bg-gray-100 rounded-lg py-3 px-4 grid grid-cols-5 gap-2 mb-2 text-xs" key={order._id}>
                         <div>
-                            {order.orderId}
+                            <span className="font-semibold">{order.orderId ? order.orderId : <span className="text-primary">PayOnDelivery</span>}</span>
                         </div>
+                
+                
                         <div className="px-0">
                             {order?.cartProducts.reduce((total, product) => 
                                 product.colours ? total + product.colours.length : total, 0)} Items
