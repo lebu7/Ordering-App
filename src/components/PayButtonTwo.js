@@ -48,6 +48,7 @@ const PayButtonTwo = ({ total, address }) => {
             cartProducts,
             total,
             reference,
+            selectedOption: "Courier Service",
           }),
         });
 
