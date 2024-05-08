@@ -26,12 +26,7 @@ export default function UserTabs({isAdmin}) {
                         >
                             Stock
                     </Link>
-                    <Link 
-                        href={'/orders'}
-                        className={path === '/orders' ? 'active' : ''} 
-                        >
-                            Orders
-                    </Link>
+                
                     <Link 
                         href={'/users'}
                         className={path.includes('/users') ? 'active' : ''} 
@@ -40,6 +35,12 @@ export default function UserTabs({isAdmin}) {
                     </Link>
                     </>
                 )}
+                    <Link 
+                        href={'/orders'}
+                        className={path === '/orders' ? 'active' : ''} 
+                        >
+                            Orders
+                    </Link>
             </div>
     );
 }

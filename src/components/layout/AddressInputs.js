@@ -1,11 +1,12 @@
-export default function AddressInputs({addressProps, setAddressProp}) {
+export default function AddressInputs({addressProps, setAddressProp,disabled=false}) {
     const {phone, streetAddress, city, estate, country} = addressProps;
     return (
       <>
         <label>
             Phone Number  
         </label>
-        <input
+        <input 
+            disabled={disabled}
             className="text-sm" 
             type="tel" 
             placeholder="Phone Number" 
@@ -15,6 +16,7 @@ export default function AddressInputs({addressProps, setAddressProp}) {
             Address 
         </label>
         <input 
+            disabled={disabled} 
             className="text-sm"
             type="text" placeholder="Street address/ Apartments" 
             value={streetAddress} onChange={ev => setAddressProp('streetAddress', ev.target.value)} 
@@ -24,7 +26,8 @@ export default function AddressInputs({addressProps, setAddressProp}) {
             <label>
             City/ Town  
             </label>
-            <input
+            <input 
+                disabled={disabled}
                 className="text-sm"
                 type="text" 
                 placeholder="City/Town" 
@@ -36,6 +39,7 @@ export default function AddressInputs({addressProps, setAddressProp}) {
             Estate  
             </label>
             <input 
+                disabled={disabled} 
                 className="text-sm"
                 type="text" 
                 placeholder="Estate" 
@@ -47,6 +51,7 @@ export default function AddressInputs({addressProps, setAddressProp}) {
             Country  
         </label>
         <input 
+            disabled={disabled} 
             className="text-sm"
             type="text" 
             placeholder="Country" 
