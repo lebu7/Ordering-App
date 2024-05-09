@@ -1,31 +1,40 @@
 import {StockItem} from "@/models/StockItem";
 import mongoose from "mongoose";
+import { isAdmin } from "../auth/[...nextauth]/route";
 
 export async function POST(req) {
     mongoose.connect(process.env.MONGO_URL);
     const data = await req.json();
-    const stockItemDoc = await StockItem.create(data);
-    return Response.json(stockItemDoc);
+    if (await isAdmin()) {
+        const stockItemDoc = await StockItem.create(data);
+        return Response.json(stockItemDoc);
+    } else {
+        return Response.json({});
+    }
 }
 
 export async function PUT(req) {
     mongoose.connect(process.env.MONGO_URL);
-    const {_id, ...data} = await req.json();
-    await StockItem.updateOne({_id}, data);
+    if (await isAdmin()) {
+        const {_id, ...data} = await req.json();
+        await StockItem.updateOne({_id}, data);
+    }
     return Response.json(true);
 }
 
 export async function GET() {
     mongoose.connect(process.env.MONGO_URL);
-    return Response.json (
-        await StockItem.find()
-    );
-}
+        return Response.json (
+            await StockItem.find()
+        );
+    }
 
 export async function DELETE(req) {
     mongoose.connect(process.env.MONGO_URL);
     const url = new URL(req.url);
     const _id = url.searchParams.get('_id');
-    await StockItem.deleteOne({_id});
+    if (isAdmin()) {
+        await StockItem.deleteOne({_id});
+    }
     return Response.json(true);
 }

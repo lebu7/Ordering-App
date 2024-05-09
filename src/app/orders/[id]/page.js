@@ -8,12 +8,16 @@ import { useEffect, useState } from "react";
 
 export default function OrderPage() {
     const [order, setOrder] = useState();
+    const [loadinOrder, setLoadingOrder] = useState(true);
     const {id} = useParams();
+
     useEffect(() => {
+        setLoadingOrder(true);
         if (id) {
             fetch('/api/orders?_id='+ id).then(res => {
                 res.json().then(orderData => {
                     setOrder(orderData);
+                    setLoadingOrder(false);
                 });
             })
         }
@@ -42,6 +46,9 @@ export default function OrderPage() {
                     <p>We will call you as soon as possible to arrange your delivery.</p>
                 </div>
             </div> 
+            {loadingOrder && (
+                <div>Loading order...</div>
+            )}
             {order && (
                 <div className="grid grid-cols-2 gap-16 mt-2">
                     <div className="grow overflow-y-auto" style={{maxHeight: 'calc(100vh - 200px)', "scrollbar-width": "thin", "scrollbar-color": "transparent transparent" /* color */, "&::-webkit-scrollbar": "0px solid transparent" /* width */}}>
