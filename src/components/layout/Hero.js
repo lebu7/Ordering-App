@@ -1,35 +1,53 @@
+'use client';
+import ChevronDown from "@/components/icons/ChevronDown";
 import Image from "next/image";
-import Right from "../icons/Right";
+import { useEffect, useState } from "react";
 
 export default function Hero() {
-    return (
-            <section className="hero mt-4">
-                <div className="py-12">
-                <h1 className="text-4xl font-semibold ">
-                    Fashion <br/>
-                     that fits your <br />
-                     style, &nbsp;
-                    <span className="text-primary" >
-                        SHEIN
-                    </span> 
-                </h1>
-                <p className="my-6 text-gray-500 text-sm">
-                    Where vibrant colors, and sophisticated silhouettes come creates a fearless and fabulous wardrobe.
-                </p>
-                <div className="flex gap-4 text-sm">
-                    <button className="flex justify-center bg-primary uppercase flex items-center gap-2 text-white px-4 py-3 rounded-full">
-                            Order now
-                            <Right />
-                    </button>
-                    <button className="flex items-center border-0 gap-2 py-2 text-gray-600 font-semibold">
-                            Learn more
-                            <Right />
-                    </button>
+    const [categories, setCategories] = useState([]);
+    useEffect(() => {
+       fetch('/api/categories').then(res => {
+           res.json().then(categories => setCategories(categories))
+       });
+    }, []);
+
+  return (
+    <section>
+        <div className="my-8 grid grid-cols-1 md:grid-cols-3 [min-height:400px]">
+            <div className="hidden md:block">
+                <div className="text-center text-white text-sm font-semibold bg-primary rounded-sm items-center">
+                    <span>
+                        Categories <ChevronDown className="w-4 h-4" />
+                        
+                    </span>
                 </div>
+                <div>
+                    {categories?.length > 0 && categories.map(c => (
+                        <div key={c._id} className="md:col-span-3">
+                            <div className="text-center">
+                                <span>{c.name} </span>
+                            </div>
+                        </div>
+                    ))}
                 </div>
-                <div className="relative">
-                <Image src={'/split-hem3.png'} layout={'fill'} objectFit={'contain'} alt={'KidInOutfit'} />
+            </div>
+            <div className="grid grid-cols-subgrid col-span-2 bg-black place-items-center">
+                <div className="m-auto">
+                    <div className="flex justify-center items-center">
+                        <Image 
+                            src="/HauteDesign.png" 
+                            className="max-w-full"
+                            alt="hero image" 
+                            objectFit="contain"
+                            width={400}
+                            height={400}
+                         />
+                    </div>
                 </div>
-            </section>
-    );
+            </div>
+
+        </div>
+    </section>
+  );
 }
+
