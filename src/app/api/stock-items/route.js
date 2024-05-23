@@ -1,6 +1,6 @@
 import {StockItem} from "@/models/StockItem";
 import mongoose from "mongoose";
-import { isAdmin } from "../auth/[...nextauth]/route";
+import { isAdmin } from "@/app/api/auth/[...nextauth]/route";
 
 export async function POST(req) {
     mongoose.connect(process.env.MONGO_URL);
@@ -17,7 +17,7 @@ export async function PUT(req) {
     mongoose.connect(process.env.MONGO_URL);
     if (await isAdmin()) {
         const {_id, ...data} = await req.json();
-        await StockItem.updateOne({_id}, data);
+        await StockItem.findByIdAndUpdate(_id, data);
     }
     return Response.json(true);
 }

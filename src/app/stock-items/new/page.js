@@ -14,7 +14,8 @@ export default function NewStockItemPage() {
     const [redirectToItems, setRedirectToItems] = useState(false);
     const {loading, data} = useProfile();
 
-    async function handleFormSubmit(ev, data) {
+    async function handleFormSubmit(data) {
+        const ev = window.event;
         ev.preventDefault();
         const savingPromise = new Promise(async (resolve, reject) => {
             const response = await fetch('/api/stock-items', {

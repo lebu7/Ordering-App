@@ -26,7 +26,8 @@ export default function EditStockItemPage() {
         })
     }, [id]);
 
-    async function handleFormSubmit(ev, data) {
+    async function handleFormSubmit(data) {
+        const ev = window.event;
         ev.preventDefault();
         data = {...data, _id: id};
         const savingPromise = new Promise(async (resolve, reject) => {

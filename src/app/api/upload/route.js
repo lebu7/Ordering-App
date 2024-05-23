@@ -33,8 +33,8 @@ export async function POST(req) {
             Body: buffer,
         }));
 
-        const link = 'https://'+bucket+'.s3.amazonaws.com/'+newFileName;
-        return Response.json(link);
+        const link = `https://${bucket}.s3.amazonaws.com/${newFileName}`;
+        return new Response(JSON.stringify({ link }), { status: 200, headers: { 'Content-Type': 'application/json' } });
     }
-    return Response.json(true);
+    return new Response(JSON.stringify({ error: 'No file provided' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
 }

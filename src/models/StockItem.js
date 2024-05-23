@@ -6,13 +6,14 @@ const ExtraPriceSchema = new Schema({
 }, {timestamps: true});
 
 const StockItemSchema = new Schema({
-    image: {type: String},
-    name: {type: String,},
+    image: {type: String },
+    name: {type: String},
     description: {type: String},
     category: {type: mongoose.Types.ObjectId},
     basePrice: {type: Number,},
     sizes: {type: [ExtraPriceSchema]},
     colours: {type: [ExtraPriceSchema] },
+    images: [{type: String}],
 }, {timestamps: true});
 
 export const StockItem = models?.StockItem || model('StockItem', StockItemSchema)

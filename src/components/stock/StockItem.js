@@ -59,7 +59,7 @@ export default function StockItem(stockItem) {
     }
 
     return (
-        <>
+        <div>
             {showPopup && (
                 <div 
                     onClick={() => setShowPopup(false)}
@@ -135,6 +135,6 @@ export default function StockItem(stockItem) {
                     onAddToCart={handleAddToCartButtonClick} 
                     {...stockItem} 
                 />
-        </>
+        </div>
     );
 }
